@@ -2961,6 +2961,16 @@ document.getElementById("closeAiAnswerBtn")?.addEventListener("click", () => {
 
 setupEditorSuggestions();
 
+/* Window resize handler for fluid charts on mobile orientation change */
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (state.view === "dashboard") renderDashboardChart();
+    if (state.view === "portfolio") renderPortfolioChart();
+  }, 150);
+});
+
 /* INIT */
 refreshModel();
 setTheme(state.theme);
@@ -2969,3 +2979,4 @@ setView(state.view);
 renderAll();
 applyAutoRefreshSetting();
 refreshLiveData({ silent: true });
+
