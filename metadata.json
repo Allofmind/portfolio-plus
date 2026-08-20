@@ -1,0 +1,6 @@
+{
+  "name": "Portfolio+",
+  "description": "Moderne Portfolio- & Broker-App mit Live-Marktdaten, kompakter Positionsliste, Scalable-Design und News auf Deutsch.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        var win = typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : globalThis;
+        if (win) {
+          var originalFetch = win.fetch;
+          var getDescriptor = function (obj, prop) {
+            var current = obj;
+            while (current) {
+              var desc = Object.getOwnPropertyDescriptor(current, prop);
+              if (desc) return desc;
+              current = Object.getPrototypeOf(current);
+            }
+            return null;
+          };
+          var desc = getDescriptor(win, "fetch");
+          if (!desc || (desc.get && !desc.set) || !desc.writable) {
+            try {
+              Object.defineProperty(win, "fetch", {
+                get: function () { return originalFetch; },
+                set: function (fn) { originalFetch = fn; },
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {}
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Portfolio+ | Scalable-Style Broker App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar glass">
+      <div class="brand" aria-label="Portfolio+ Logo">
+        <svg viewBox="0 0 280 60" fill="none" class="brand-logo-svg">
+          <defs>
+            <linearGradient id="brand-cyan-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00F0FF" />
+              <stop offset="60%" stop-color="#0088FF" />
+              <stop offset="100%" stop-color="#0055FF" />
+            </linearGradient>
+
+            <linearGradient id="brand-purple-magenta" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#6000FF" />
+              <stop offset="50%" stop-color="#9A00FF" />
+              <stop offset="100%" stop-color="#E100FF" />
+            </linearGradient>
+
+            <linearGradient id="brand-plus-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00F0FF" />
+              <stop offset="100%" stop-color="#00B2FF" />
+            </linearGradient>
+
+            <linearGradient id="brand-text-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFFFFF" />
+              <stop offset="100%" stop-color="#E0F2FF" />
+            </linearGradient>
+          </defs>
+
+          <!-- LOGO ICON -->
+          <g transform="translate(2, 4)">
+            <!-- Top Cyan/Blue P Loop & Upper Leg -->
+            <path d="M 0 0 H 32 C 46 0 54 7 54 18 C 54 29 46 36 32 36 H 16 V 23 H 30 C 35 23 38 21 38 18 C 38 15 35 13 30 13 H 16 V 42 L 0 46 V 0 Z" fill="url(#brand-cyan-blue)" />
+
+            <!-- Middle Purple Diagonal Facet -->
+            <path d="M 0 48 L 16 44 V 51 L 0 55 Z" fill="url(#brand-purple-magenta)" />
+
+            <!-- Lower Purple Small Facet -->
+            <path d="M 0 57 L 16 53 V 56 H 0 Z" fill="url(#brand-purple-magenta)" />
+          </g>
+
+          <!-- PLUS SYMBOL '+' -->
+          <g transform="translate(66, 20)">
+            <rect x="6" y="0" width="5" height="17" rx="2" fill="url(#brand-plus-cyan)" />
+            <rect x="0" y="6" width="17" height="5" rx="2" fill="url(#brand-plus-cyan)" />
+          </g>
+
+          <!-- TEXT 'Portfolio' -->
+          <text x="96" y="42" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="800" font-size="34" letter-spacing="-0.02em" fill="url(#brand-text-grad)">Portfolio</text>
+        </svg>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Hauptnavigation">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span>Dashboard</span></button>
+        <button class="nav-link" data-view="portfolio"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19H2"/></svg></span><span>Portfolio</span></button>
+        <button class="nav-link" data-view="watchlist"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.92 1.06-6.2L3 9.53l6.22-.9L12 3Z"/></svg></span><span>Watchlist</span></button>
+        <button class="nav-link" data-view="search"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span><span>Suchen</span></button>
+        <button class="nav-link" data-view="news"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h15a1 1 0 0 1 1 1v13H5a1 1 0 0 1-1-1V5Z"/><path d="M8 9h8M8 13h8M8 17h5"/><path d="M4 7h-1v11a2 2 0 0 0 2 2h13"/></svg></span><span>News</span></button>
+        <button class="nav-link" data-view="settings"><span class="nav-icon settings-icon" aria-hidden="true">⚙︎</span><span>Einstellungen</span></button>
+      </nav>
+
+      <div class="sidebar-card">
+        <span>Portfoliowert</span>
+        <strong id="sidebarTotal">0,00 €</strong>
+        <small id="sidebarChange">0,00 € heute</small>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar glass">
+        <div>
+          <p class="eyebrow" id="viewEyebrow">Übersicht</p>
+          <h2 id="viewTitle">Dein Portfolio auf einen Blick</h2>
+          <p class="topbar-subtitle" id="viewSubtitle">Wert, Bewegung und Fokus ohne unnötiges Zeug.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <div id="topbarSearchTrigger" class="topbar-search-btn" role="button" tabindex="0" title="Aktien & Wertpapiere suchen (Strg+K)">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span class="search-btn-text">Suchen oder Frage stellen...</span>
+            <kbd class="search-btn-shortcut">Strg K</kbd>
+          </div>
+          <span id="autoRefreshPill" class="status-pill online" style="display: none; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">⏱️ Auto 5 Min</span>
+          <button id="refreshBtn" class="primary-btn" type="button">Neu berechnen</button>
+        </div>
+      </header>
+
+      <div class="view-stack">
+        <!-- DASHBOARD VIEW -->
+        <section class="view active" id="dashboardView">
+          <div class="hero-grid" id="summaryGrid"></div>
+
+          <div class="dashboard-grid">
+            <section class="glass panel">
+              <div class="section-head">
+                <div>
+                  <h3>Depotentwicklung</h3>
+                  <p>Dein Gesamtportfolio im Zeitverlauf.</p>
+                </div>
+                <div class="range-switch compact" id="dashboardRangeSwitch">
+                  <button class="range-btn" data-range="1D">1T</button>
+                  <button class="range-btn active" data-range="1W">1W</button>
+                  <button class="range-btn" data-range="1M">1M</button>
+                  <button class="range-btn" data-range="3M">3M</button>
+                  <button class="range-btn" data-range="1Y">1J</button>
+                  <button class="range-btn" data-range="SINCE">Seit Kauf</button>
+                </div>
+              </div>
+              <div class="chart-meta" id="dashboardChartMeta"></div>
+              <div class="chart-wrap">
+                <svg id="dashboardChart" viewBox="0 0 1000 260" preserveAspectRatio="none"></svg>
+              </div>
+            </section>
+
+            <section class="glass panel">
+              <div class="section-head">
+                <div>
+                  <h3>Top Positionen</h3>
+                  <p>Die größten Werte im Depot.</p>
+                </div>
+              </div>
+              <div id="dashboardTopList" class="mini-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <!-- PORTFOLIO VIEW (REDESIGNED SCALABLE / GETQUIN STYLE) -->
+        <section class="view" id="portfolioView">
+          <!-- Kompakte Depotleiste oben -->
+          <div class="depot-bar glass" id="depotBar"></div>
+
+          <section class="glass panel">
+            <div class="section-head">
+              <div>
+                <h3>Portfolio-Entwicklung</h3>
+                <p>Echte Livekurse, Kerzen und historische Performance im Zeitfenster.</p>
+              </div>
+
+              <div class="range-switch" id="rangeSwitch">
+                <button class="range-btn" data-range="1D">1T</button>
+                <button class="range-btn active" data-range="1W">1W</button>
+                <button class="range-btn" data-range="1M">1M</button>
+                <button class="range-btn" data-range="3M">3M</button>
+                <button class="range-btn" data-range="1Y">1J</button>
+                <button class="range-btn" data-range="SINCE">Seit Kauf</button>
+              </div>
+            </div>
+
+            <div class="chart-meta" id="portfolioChartMeta"></div>
+            <div class="chart-wrap chart-large">
+              <svg id="portfolioChart" viewBox="0 0 1000 260" preserveAspectRatio="none"></svg>
+            </div>
+          </section>
+
+
+          <section class="glass panel portfolio-holdings-panel">
+            <div class="section-head">
+              <div>
+                <h3>Bestand &amp; Positionen</h3>
+                <p>Kompakte Broker-Ansicht. Klicke auf eine Position für Details und Buchungen.</p>
+              </div>
+
+              <div class="section-actions">
+                <button id="addPositionBtn" class="primary-btn" type="button">＋ Buchung hinzufügen</button>
+                <input id="searchInput" class="search-input" type="search" placeholder="Suche nach Aktie, Ticker oder Sektor…" />
+              </div>
+            </div>
+
+            <div class="sort-row">
+              <select id="sortSelect" class="select-input">
+                <option value="value-desc">Nach Wert ↓</option>
+                <option value="gain-desc">Nach Gesamtgewinn ↓</option>
+                <option value="gain-asc">Nach Gesamtgewinn ↑</option>
+                <option value="day-desc">Nach Tagesperformance ↓</option>
+                <option value="name-asc">Nach Name A–Z</option>
+              </select>
+            </div>
+
+            <!-- Moderne tabellarische Positionsliste -->
+            <div class="positions-table-wrap">
+              <div class="positions-head" id="positionsHead">
+                <span class="col-main">Name / Ticker</span>
+                <span class="col-qty">Stück / Ø Kauf</span>
+                <span class="col-price">Kurs / Heute</span>
+                <span class="col-value">Wert / Gewinn</span>
+                <span class="col-chart">Verlauf</span>
+                <span class="col-actions" style="text-align: right;">Aktionen</span>
+              </div>
+              <div id="positionsList" class="positions-list"></div>
+            </div>
+          </section>
+        </section>
+
+        <!-- WATCHLIST VIEW -->
+        <section class="view" id="watchlistView">
+          <div class="watchlist-summary" id="watchlistSummary"></div>
+
+          <section class="glass panel">
+            <div class="section-head">
+              <div>
+                <h3>Watchlist</h3>
+                <p>Eigener Screen für deine Beobachtungswerte mit Livekursen und Minicharts.</p>
+              </div>
+              <div>
+                <button id="watchlistSearchTrigger" class="primary-btn compact" type="button">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px; vertical-align: middle;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                  <span>Wertpapier suchen &amp; hinzufügen</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="watchlistList" class="watchlist-grid"></div>
+          </section>
+        </section>
+
+        <!-- SEARCH VIEW (WERTPAPIERSUCHE IM SCALABLE STYLE) -->
+        <section class="view" id="searchView">
+          <div class="search-page-container">
+            <!-- Search Input Box -->
+            <div class="search-bar-wrap">
+              <svg class="search-bar-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="globalSearchInput" class="search-main-input" placeholder="Tesla, Apple, MSCI World, Bitcoin, ISIN..." autocomplete="off" spellcheck="false" />
+              <button id="clearSearchBtn" class="search-clear-btn hidden" type="button" aria-label="Suche zurücksetzen">✕</button>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="search-categories" id="searchCategoryFilters">
+              <button class="search-cat-btn active" data-cat="all">Alle</button>
+              <button class="search-cat-btn" data-cat="Aktie">Aktien</button>
+              <button class="search-cat-btn" data-cat="ETF">ETFs</button>
+              <button class="search-cat-btn" data-cat="Krypto">Derivate &amp; Krypto</button>
+            </div>
+
+            <!-- AI Insights Ask Pill/Box -->
+            <div class="search-ai-banner" id="searchAiBanner">
+              <div class="search-ai-left">
+                <span class="ai-spark-icon">✨</span>
+                <div>
+                  <strong>Insights fragen <span class="badge-new">NEU</span></strong>
+                  <p id="searchAiPromptText">KI-Analyse zu deinen Suchergebnissen per Gemini starten.</p>
+                </div>
+              </div>
+              <button class="search-ai-btn" id="askAiSearchBtn" type="button">Frage stellen ↵</button>
+            </div>
+
+            <!-- AI Insights Result Container -->
+            <div id="searchAiAnswerBox" class="search-ai-answer-box hidden glass panel">
+              <div class="section-head" style="margin-bottom: 10px;">
+                <h4 style="margin:0; font-size: 15px; display: flex; align-items: center; gap: 8px;">✨ Gemini KI Insights</h4>
+                <button id="closeAiAnswerBtn" class="ghost-btn compact" type="button">Schließen ×</button>
+              </div>
+              <div id="searchAiAnswerContent" class="markdown-body" style="font-size: 14px; line-height: 1.6; color: var(--text);"></div>
+            </div>
+
+            <!-- Search Results Area -->
+            <div id="searchResultsContainer" class="search-results-wrap"></div>
+          </div>
+        </section>
+
+        <!-- NEWS VIEW (GERMAN DEUTSCH) -->
+        <section class="view" id="newsView">
+          <section class="glass panel">
+            <div class="section-head">
+              <div>
+                <h3>News zu deinem Depot (auf Deutsch)</h3>
+                <p>Automatisch ins Deutsche übersetzte Unternehmensnachrichten zu deinen Positionen.</p>
+              </div>
+            </div>
+
+            <div id="newsList" class="news-grid"></div>
+          </section>
+        </section>
+
+        <!-- EINSTELLUNGEN VIEW -->
+        <section class="view" id="settingsView">
+          <div class="settings-grid">
+            <section class="glass panel">
+              <div class="section-head">
+                <div>
+                  <h3>Erscheinungsbild</h3>
+                  <p>Passe das Design und Farbschema der App an.</p>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-info">
+                  <strong>Farbschema (Dark / Light Mode)</strong>
+                  <p>Wechsle zwischen dunklem und hellem Modus für optimale Lesbarkeit.</p>
+                </div>
+                <button id="themeToggle" class="ghost-btn" type="button">🌙 Dark Mode</button>
+              </div>
+            </section>
+
+            <section class="glass panel">
+              <div class="section-head">
+                <div>
+                  <h3>Google Gemini KI-Schnittstelle</h3>
+                  <p>Integrierte KI zur automatischen Übersetzung &amp; Zusammenfassung von Finanznachrichten.</p>
+                </div>
+                <div>
+                  <span id="geminiStatus" class="status-pill online">KI Aktiv</span>
+                </div>
+              </div>
+
+              <div class="settings-form">
+                <div class="form-group">
+                  <label for="geminiApiKeyInput">Google Gemini API Key (optional)</label>
+                  <div class="api-key-row">
+                    <input id="geminiApiKeyInput" class="api-key-input" type="password" autocomplete="off" placeholder="AIzaSy... (Standardmäßig wird der Server-Schlüssel verwendet)" />
+                    <button id="saveGeminiApiKeyBtn" class="primary-btn" type="button">Gemini Key speichern</button>
+                  </div>
+                  <small class="form-help">Nutzt das Modell <code>gemini-3.6-flash</code> für strukturierte deutsche Übersetzungen. Ist kein eigener Key hinterlegt, nutzt die App automatisch den Standard-Serverkey.</small>
+                </div>
+              </div>
+            </section>
+
+            <section class="glass panel">
+              <div class="section-head">
+                <div>
+                  <h3>Finnhub Live-Schnittstelle</h3>
+                  <p>Hinterlege deinen Finnhub API Key für Livekurse und Unternehmendaten.</p>
+                </div>
+                <div>
+                  <span id="connectionStatus" class="status-pill offline">Offline bereit</span>
+                </div>
+              </div>
+
+              <div class="settings-form">
+                <div class="form-group">
+                  <label for="apiKeyInput">Finnhub API Key</label>
+                  <div class="api-key-row">
+                    <input id="apiKeyInput" class="api-key-input" type="password" autocomplete="off" placeholder="z. B. c1234567890..." />
+                    <button id="saveApiKeyBtn" class="primary-btn" type="button">API Key speichern</button>
+                  </div>
+                  <small class="form-help">Einen kostenlosen API Key erhältst du auf <a href="https://finnhub.io" target="_blank" rel="noopener">finnhub.io</a>.</small>
+                </div>
+              </div>
+            </section>
+
+            <section class="glass panel">
+              <div class="section-head">
+                <div>
+                  <h3>Automatisches Update (Zweiter Bildschirm)</h3>
+                  <p>Aktualisiere dein Portfolio und Kurse automatisch in festen Intervallen für dein Multimonitor-Setup.</p>
+                </div>
+                <div>
+                  <span id="autoRefreshStatus" class="status-pill offline">Auto-Update Aus</span>
+                </div>
+              </div>
+
+              <div class="settings-form">
+                <div class="form-group">
+                  <label for="autoRefreshSelect">Intervall für automatische Aktualisierung</label>
+                  <div class="api-key-row">
+                    <select id="autoRefreshSelect" class="api-key-input" style="cursor: pointer; background: rgba(15, 23, 42, 0.8);">
+                      <option value="0">Aus (Manuelle Aktualisierung)</option>
+                      <option value="1">Jede Minute (1 Min)</option>
+                      <option value="2">Alle 2 Minuten</option>
+                      <option value="5">Alle 5 Minuten</option>
+                      <option value="10">Alle 10 Minuten</option>
+                      <option value="15">Alle 15 Minuten</option>
+                      <option value="30">Alle 30 Minuten</option>
+                      <option value="60">Jede Stunde (60 Min)</option>
+                    </select>
+                  </div>
+                  <small class="form-help">Ideal für deinen 2. Bildschirm beim Zocken oder Arbeiten: Dein Portfolio aktualisiert sich von selbst ohne Klicks.</small>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- DETAIL MODAL / SHEET (SCALABLE STYLE) -->
+  <div id="detailBackdrop" class="detail-backdrop" aria-hidden="true" data-mode="position">
+    <article class="detail-sheet glass">
+      <div class="detail-topbar">
+        <div class="detail-titleblock">
+          <p class="eyebrow" id="detailEyebrow">Position</p>
+
+          <div class="detail-identity">
+            <div id="detailBadge" class="asset-badge detail-badge">MS</div>
+            <div class="detail-identity-text">
+              <h3 id="detailTitle">—</h3>
+              <p id="detailSubtitle">—</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-actions">
+          <button id="addTransactionBtn" class="primary-btn" type="button">＋ Buchung</button>
+          <button id="editPositionBtn" class="ghost-btn" type="button">✏️ Bearbeiten</button>
+          <button id="deletePositionBtn" class="danger-btn" type="button">🗑️ Löschen</button>
+          <button id="toggleWatch" class="ghost-btn" type="button">★ Watchlist</button>
+          <button id="closeDetail" class="close-detail" type="button" aria-label="Schließen">×</button>
+        </div>
+      </div>
+
+      <div id="detailMetrics" class="detail-metrics"></div>
+
+      <div class="detail-chart-head" id="detailChartHead">
+        <div>
+          <h3>Verlauf &amp; Chart</h3>
+          <p id="detailChartMeta">—</p>
+        </div>
+
+        <div class="range-switch compact" id="detailRangeSwitch">
+          <button class="range-btn" data-range="1D">1T</button>
+          <button class="range-btn active" data-range="1W">1W</button>
+          <button class="range-btn" data-range="1M">1M</button>
+          <button class="range-btn" data-range="3M">3M</button>
+          <button class="range-btn" data-range="1Y">1J</button>
+          <button class="range-btn" data-range="SINCE">Seit Kauf</button>
+        </div>
+      </div>
+
+      <div class="chart-wrap detail-chart" id="detailChartWrap">
+        <svg id="detailChart" viewBox="0 0 1000 260" preserveAspectRatio="none"></svg>
+      </div>
+
+      <section id="detailTransactionsWrap" class="detail-transactions">
+        <div class="section-head">
+          <div>
+            <h3>Buchungen &amp; Historie</h3>
+            <p>Käufe und Verkäufe für diesen Wert.</p>
+          </div>
+        </div>
+        <div id="detailTransactions" class="transactions-list"></div>
+      </section>
+
+      <div id="detailArticle" class="detail-article"></div>
+    </article>
+  </div>
+
+  <!-- EDITOR MODAL / SHEET -->
+  <div id="editorBackdrop" class="detail-backdrop" aria-hidden="true">
+    <article class="detail-sheet glass editor-sheet">
+      <div class="detail-topbar">
+        <div class="detail-titleblock">
+          <p class="eyebrow">Daten</p>
+          <h3 id="editorTitle">Buchung hinzufügen</h3>
+          <p id="editorSubtitle">Trage deine Buchung manuell ein. Gespeichert wird lokal im Browser.</p>
+        </div>
+
+        <div class="detail-actions">
+          <button id="closeEditor" class="close-detail" type="button" aria-label="Schließen">×</button>
+        </div>
+      </div>
+
+      <form id="positionForm" class="editor-form">
+        <input type="hidden" id="editorId" />
+
+        <div class="editor-grid" style="position: relative;">
+          <div id="editorSuggestions" class="editor-suggestions hidden"></div>
+
+          <label class="editor-field">
+            <span>Name</span>
+            <input id="fieldName" type="text" placeholder="z. B. Tesla, Apple..." required autocomplete="off" />
+          </label>
+
+          <label class="editor-field">
+            <span>Ticker</span>
+            <input id="fieldTicker" type="text" placeholder="TSLA" required maxlength="12" autocomplete="off" />
+          </label>
+
+          <label class="editor-field">
+            <span>Asset-Typ</span>
+            <select id="fieldType" required>
+              <option value="Aktie">Aktie</option>
+              <option value="ETF">ETF</option>
+              <option value="Krypto">Krypto</option>
+              <option value="Sonstiges">Sonstiges</option>
+            </select>
+          </label>
+
+          <label class="editor-field">
+            <span>Sektor</span>
+            <input id="fieldSector" type="text" placeholder="Software / Tech" required />
+          </label>
+
+          <label class="editor-field">
+            <span>Transaktionstyp</span>
+            <select id="fieldTransactionType" required>
+              <option value="buy">Kauf</option>
+              <option value="sell">Verkauf</option>
+            </select>
+          </label>
+
+          <label class="editor-field">
+            <span>Stückzahl</span>
+            <input id="fieldQty" type="number" min="0" step="0.01" placeholder="4" required />
+          </label>
+
+          <label class="editor-field">
+            <span>Preis pro Stück</span>
+            <input id="fieldBuyPrice" type="number" min="0" step="0.01" placeholder="340,10" required />
+          </label>
+
+          <label class="editor-field">
+            <span>Aktueller Kurs</span>
+            <input id="fieldCurrentPrice" type="number" min="0" step="0.01" placeholder="340,10" required />
+          </label>
+
+          <label class="editor-field">
+            <span>Tagesänderung %</span>
+            <input id="fieldDayChangePct" type="number" step="0.01" placeholder="0,00" />
+          </label>
+
+          <label class="editor-field date-field">
+            <span>Buchungsdatum &amp; Uhrzeit</span>
+
+            <div class="date-time-row">
+              <div class="date-input-wrap">
+                <input id="fieldBuyDateDisplay" class="date-display-input" type="text" inputmode="numeric" autocomplete="off" placeholder="TT.MM.JJJJ" />
+                <button id="openDatePicker" class="date-btn" type="button" aria-label="Datum auswählen">📅</button>
+              </div>
+
+              <div class="time-input-wrap">
+                <input id="fieldBuyTimeDisplay" class="time-display-input" type="text" inputmode="numeric" autocomplete="off" placeholder="HH:MM" />
+                <button id="openTimePicker" class="date-btn" type="button" aria-label="Uhrzeit auswählen">🕒</button>
+
+                <div id="timePickerPopover" class="time-picker-popover hidden" aria-hidden="true">
+                  <div class="date-picker-head">
+                    <button id="timePrev" class="date-nav-btn" type="button" aria-label="Vorherige Stunde">←</button>
+                    <div id="timePickerLabel" class="date-picker-label">12:00</div>
+                    <button id="timeNext" class="date-nav-btn" type="button" aria-label="Nächste Stunde">→</button>
+                  </div>
+
+                  <div class="time-picker-body">
+                    <div class="time-column">
+                      <span class="time-column-title">Stunden</span>
+                      <div id="hourGrid" class="time-grid"></div>
+                    </div>
+
+                    <div class="time-column">
+                      <span class="time-column-title">Minuten</span>
+                      <div id="minuteGrid" class="time-grid"></div>
+                    </div>
+                  </div>
+
+                  <div class="date-picker-foot">
+                    <button id="timeClear" class="ghost-btn" type="button">Löschen</button>
+                    <button id="timeNow" class="primary-btn" type="button">Jetzt</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input id="fieldBuyDate" type="hidden" />
+            <input id="fieldBuyTime" type="hidden" />
+
+            <div id="datePickerPopover" class="date-picker-popover hidden" aria-hidden="true">
+              <div class="date-picker-head">
+                <button id="datePrev" class="date-nav-btn" type="button" aria-label="Vorheriger Monat">←</button>
+                <div id="datePickerLabel" class="date-picker-label">Juli 2026</div>
+                <button id="dateNext" class="date-nav-btn" type="button" aria-label="Nächster Monat">→</button>
+              </div>
+
+              <div class="date-weekdays">
+                <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+              </div>
+
+              <div id="dateGrid" class="date-grid"></div>
+
+              <div class="date-picker-foot">
+                <button id="dateClear" class="ghost-btn" type="button">Löschen</button>
+                <button id="dateToday" class="primary-btn" type="button">Heute</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="editor-field">
+            <span>Gebühren</span>
+            <input id="fieldFees" type="number" min="0" step="0.01" placeholder="0,00" />
+          </label>
+
+          <label class="editor-check editor-span-2">
+            <input id="fieldWatch" type="checkbox" />
+            <span>Auf Watchlist setzen</span>
+          </label>
+
+          <label class="editor-field editor-span-2">
+            <span>Notiz</span>
+            <textarea id="fieldNote" placeholder="Optional"></textarea>
+          </label>
+        </div>
+
+        <div class="editor-actions">
+          <button id="cancelEditor" class="ghost-btn" type="button">Abbrechen</button>
+          <button class="primary-btn" type="submit">Speichern</button>
+        </div>
+      </form>
+    </article>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="api.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
