@@ -992,6 +992,68 @@ textarea {
   box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
 }
 
+.asset-badge-wrap {
+  position: relative;
+  overflow: hidden;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  background: transparent;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.asset-badge-wrap .asset-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 5px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: inherit;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  display: block;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .asset-badge-wrap .asset-logo-img {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.asset-badge-wrap .asset-fallback-badge {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.badge-icon-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.badge-icon-text.etf-text {
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+}
+
 .asset-logo {
   object-fit: contain;
   padding: 5px;
@@ -1008,30 +1070,46 @@ textarea {
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-.position-logo.asset-logo {
+.position-logo.asset-logo,
+.position-logo.asset-badge-wrap {
   width: 42px;
   height: 42px;
   border-radius: 12px;
+  font-size: 13.5px;
 }
 
-.asset-badge.asset-logo {
+.asset-badge.asset-logo,
+.asset-badge.asset-badge-wrap {
   width: 48px;
   height: 48px;
   border-radius: 14px;
+  font-size: 15px;
 }
 
-.detail-badge.asset-logo {
+.detail-badge.asset-logo,
+.detail-badge.asset-badge-wrap {
   width: 56px;
   height: 56px;
   border-radius: 16px;
+  font-size: 19px;
+}
+
+.detail-badge.asset-badge-wrap .asset-logo-img {
   padding: 8px;
 }
 
 .top-mini-logo.asset-logo,
-.asset-badge-sm.asset-logo {
+.top-mini-logo.asset-badge-wrap,
+.asset-badge-sm.asset-logo,
+.asset-badge-sm.asset-badge-wrap {
   width: 38px;
   height: 38px;
   border-radius: 10px;
+  font-size: 12px;
+}
+
+.top-mini-logo.asset-badge-wrap .asset-logo-img,
+.asset-badge-sm.asset-badge-wrap .asset-logo-img {
   padding: 4px;
 }
 
@@ -1229,7 +1307,7 @@ textarea {
 .watch-card {
   cursor: pointer;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 120px 110px;
+  grid-template-columns: 48px minmax(0, 1fr) 120px 110px auto;
   gap: 16px;
   align-items: center;
 }

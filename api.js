@@ -108,17 +108,19 @@
       try {
         const data = await this.request("/search", { q: query.trim() });
         if (!data?.result || !Array.isArray(data.result)) return [];
-        return data.result.map(item => ({
-          name: item.description || item.displaySymbol || item.symbol,
-          ticker: item.symbol,
-          displaySymbol: item.displaySymbol || item.symbol,
-          assetType: item.type === "Common Stock" ? "Aktie" : item.type === "ETP" ? "ETF" : item.type || "Aktie",
-          sector: item.type || "Wertpapier",
-          isin: item.isin || `Finnhub ${item.symbol}`,
-          price: 0,
-          dayChangePct: 0,
-          logo: item.symbol
-        })).slice(0, 10);
+        return data.result
+          .filter(item => item.symbol && !item.symbol.includes("."))
+          .map(item => ({
+            name: item.description || item.displaySymbol || item.symbol,
+            ticker: item.symbol,
+            displaySymbol: item.displaySymbol || item.symbol,
+            assetType: item.type === "Common Stock" ? "Aktie" : item.type === "ETP" ? "ETF" : item.type || "Aktie",
+            sector: item.type === "Common Stock" ? "Internationale Aktie" : item.type || "Wertpapier",
+            isin: item.isin || `US${item.symbol}101`,
+            price: 0,
+            dayChangePct: 0,
+            logo: item.symbol
+          })).slice(0, 20);
       } catch {
         return [];
       }

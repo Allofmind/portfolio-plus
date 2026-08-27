@@ -1,66 +1,22 @@
 const STORAGE_KEY = "portfolio-plus-ledger-v1";
 const LEGACY_STORAGE_KEY = "portfolio-plus-positions-v2";
 
-const STOCK_CATALOG = [
-  { name: "Cloudflare A", ticker: "NET", assetType: "Aktie", sector: "Cloud & Cybersecurity", price: 272.95, dayChangePct: 2.59, isin: "US18915M1071" },
+const STOCK_CATALOG = (typeof window !== "undefined" && window.STOCK_CATALOG) ? window.STOCK_CATALOG : [
+  { name: "Cloudflare Inc. (Class A)", ticker: "NET", assetType: "Aktie", sector: "Cloud & Cybersecurity", price: 272.95, dayChangePct: 2.59, isin: "US18915M1071" },
   { name: "Tesla Inc.", ticker: "TSLA", assetType: "Aktie", sector: "Automobil / EV", price: 286.55, dayChangePct: 1.89, isin: "US88160R1014" },
-  { name: "Tesla CDR (CAD Hedged)", ticker: "TSLA", assetType: "Aktie", sector: "Automobil / EV", price: 17.88, dayChangePct: 1.72, isin: "CA88162R1091" },
-  { name: "Leverage Shares 3x Long Tesla ETP", ticker: "TSL3", assetType: "Krypto", sector: "Leveraged ETP", price: 4.44, dayChangePct: 5.62, isin: "XS2297549128" },
-  { name: "Leverage Shares -1x Short Tesla ETP", ticker: "TSLS", assetType: "Krypto", sector: "Short ETP", price: 8.12, dayChangePct: -1.82, isin: "XS2297551298" },
-  { name: "Leverage Shares -3x Short Tesla ETP", ticker: "3STS", assetType: "Krypto", sector: "Short ETP", price: 2.10, dayChangePct: -5.40, isin: "XS2472334809" },
-  { name: "Incomeshares Tesla Options ETP", ticker: "TSLY", assetType: "ETF", sector: "Options Income", price: 11.20, dayChangePct: 0.45, isin: "US9219468858" },
+  { name: "CrowdStrike Holdings", ticker: "CRWD", assetType: "Aktie", sector: "Cybersecurity", price: 265.40, dayChangePct: 1.85, isin: "US22788C1053" },
+  { name: "Palantir Technologies", ticker: "PLTR", assetType: "Aktie", sector: "Software / KI Analytics", price: 28.90, dayChangePct: 4.20, isin: "US69608A1088" },
   { name: "NVIDIA Corporation", ticker: "NVDA", assetType: "Aktie", sector: "Halbleiter / KI", price: 128.40, dayChangePct: 3.15, isin: "US67066G1040" },
   { name: "Apple Inc.", ticker: "AAPL", assetType: "Aktie", sector: "Unterhaltungselektronik", price: 224.30, dayChangePct: 0.85, isin: "US0378331005" },
   { name: "Microsoft Corporation", ticker: "MSFT", assetType: "Aktie", sector: "Software / Cloud", price: 448.20, dayChangePct: -0.42, isin: "US5949181045" },
   { name: "Amazon.com Inc.", ticker: "AMZN", assetType: "Aktie", sector: "E-Commerce / Cloud", price: 186.50, dayChangePct: 1.12, isin: "US0231351067" },
   { name: "Alphabet Inc. (Google A)", ticker: "GOOGL", assetType: "Aktie", sector: "Internet / KI", price: 178.90, dayChangePct: 0.64, isin: "US02079K3059" },
   { name: "Meta Platforms Inc.", ticker: "META", assetType: "Aktie", sector: "Social Media / KI", price: 512.40, dayChangePct: 2.45, isin: "US30303M1027" },
-  { name: "Netflix Inc.", ticker: "NFLX", assetType: "Aktie", sector: "Entertainment / Streaming", price: 685.10, dayChangePct: 1.30, isin: "US64110L1061" },
-  { name: "Palantir Technologies", ticker: "PLTR", assetType: "Aktie", sector: "Software / KI Analytics", price: 28.90, dayChangePct: 4.20, isin: "US69608A1088" },
-  { name: "CrowdStrike Holdings", ticker: "CRWD", assetType: "Aktie", sector: "Cybersecurity", price: 265.40, dayChangePct: 1.85, isin: "US22788C1053" },
-  { name: "Snowflake Inc.", ticker: "SNOW", assetType: "Aktie", sector: "Cloud Data", price: 118.20, dayChangePct: 0.95, isin: "US8334451098" },
-  { name: "Datadog Inc.", ticker: "DDOG", assetType: "Aktie", sector: "Cloud Monitoring", price: 114.60, dayChangePct: 2.10, isin: "US23804L1035" },
-  { name: "Super Micro Computer", ticker: "SMCI", assetType: "Aktie", sector: "Server & KI Hardware", price: 42.50, dayChangePct: -1.20, isin: "US86800U1043" },
-  { name: "MicroStrategy Inc.", ticker: "MSTR", assetType: "Aktie", sector: "Enterprise Software / BTC", price: 135.20, dayChangePct: 7.40, isin: "US5949724083" },
-  { name: "Broadcom Inc.", ticker: "AVGO", assetType: "Aktie", sector: "Halbleiter & Infra", price: 162.80, dayChangePct: 2.30, isin: "US11135F1012" },
-  { name: "Eli Lilly and Co.", ticker: "LLY", assetType: "Aktie", sector: "Pharma / Biotech", price: 845.20, dayChangePct: 1.15, isin: "US5324571083" },
-  { name: "Berkshire Hathaway B", ticker: "BRK.B", assetType: "Aktie", sector: "Mischkonzern", price: 410.50, dayChangePct: 0.25, isin: "US0846707026" },
-  { name: "Novo Nordisk B", ticker: "NOVO B", assetType: "Aktie", sector: "Pharma / Diabetes", price: 124.60, dayChangePct: -0.80, isin: "DK0062498333" },
-  { name: "ASML Holding NV", ticker: "ASML", assetType: "Aktie", sector: "Halbleiter-Ausrüstung", price: 812.00, dayChangePct: 1.45, isin: "NL0010273215" },
-  { name: "Rheinmetall AG", ticker: "RHM", assetType: "Aktie", sector: "Rüstung & Industrie", price: 492.00, dayChangePct: 2.80, isin: "DE0007030009" },
-  { name: "BioNTech SE", ticker: "BNTX", assetType: "Aktie", sector: "Biotech", price: 82.40, dayChangePct: -0.50, isin: "US09075V1026" },
-  { name: "Deutsche Telekom AG", ticker: "DTE", assetType: "Aktie", sector: "Telekommunikation", price: 24.80, dayChangePct: 0.40, isin: "DE0005557508" },
-  { name: "Mercedes-Benz Group", ticker: "MBG", assetType: "Aktie", sector: "Automobil", price: 62.40, dayChangePct: -0.30, isin: "DE0007100000" },
-  { name: "Porsche AG Vz.", ticker: "P911", assetType: "Aktie", sector: "Automobil", price: 71.50, dayChangePct: 0.10, isin: "DE000PAG9113" },
-  { name: "ARM Holdings plc", ticker: "ARM", assetType: "Aktie", sector: "Halbleiter / IP", price: 128.50, dayChangePct: 3.80, isin: "US0420681068" },
-  { name: "Taiwan Semiconductor (TSMC)", ticker: "TSM", assetType: "Aktie", sector: "Halbleiter-Foundry", price: 165.20, dayChangePct: 2.90, isin: "US8740391004" },
-  { name: "Uber Technologies", ticker: "UBER", assetType: "Aktie", sector: "Mobilität & Tech", price: 68.90, dayChangePct: 1.60, isin: "US90353T1007" },
-  { name: "Airbnb Inc.", ticker: "ABNB", assetType: "Aktie", sector: "Reise Plattform", price: 116.30, dayChangePct: -0.90, isin: "US0090661010" },
-  { name: "Block Inc. (Square)", ticker: "SQ", assetType: "Aktie", sector: "Fintech", price: 58.40, dayChangePct: 2.10, isin: "US8522341036" },
-  { name: "Robinhood Markets", ticker: "HOOD", assetType: "Aktie", sector: "Fintech / Broker", price: 19.80, dayChangePct: 4.50, isin: "US7707001027" },
-  { name: "LVMH Moët Hennessy", ticker: "MC", assetType: "Aktie", sector: "Luxusgüter", price: 685.00, dayChangePct: 0.80, isin: "FR0000121014" },
-  { name: "Ferrari N.V.", ticker: "RACE", assetType: "Aktie", sector: "Luxus-Automobil", price: 412.00, dayChangePct: 1.20, isin: "NL0011585146" },
-  { name: "Advanced Micro Devices (AMD)", ticker: "AMD", assetType: "Aktie", sector: "Halbleiter", price: 156.80, dayChangePct: 1.95, isin: "US0079031078" },
-  { name: "Intel Corporation", ticker: "INTC", assetType: "Aktie", sector: "Halbleiter", price: 21.40, dayChangePct: -1.15, isin: "US4581401001" },
   { name: "SAP SE", ticker: "SAP", assetType: "Aktie", sector: "Unternehmenssoftware", price: 198.60, dayChangePct: 0.75, isin: "DE0007164600" },
-  { name: "Allianz SE", ticker: "ALV", assetType: "Aktie", sector: "Finanzen / Versicherung", price: 268.40, dayChangePct: 0.30, isin: "DE0008404005" },
-  { name: "Siemens AG", ticker: "SIE", assetType: "Aktie", sector: "Industrie / Automation", price: 172.10, dayChangePct: 0.55, isin: "DE0007236101" },
-  { name: "Volkswagen AG Vz.", ticker: "VOW3", assetType: "Aktie", sector: "Automobil", price: 98.20, dayChangePct: -0.65, isin: "DE0007664039" },
-  { name: "BMW AG", ticker: "BMW", assetType: "Aktie", sector: "Automobil", price: 84.60, dayChangePct: 0.12, isin: "DE0005190003" },
-  { name: "Coinbase Global Inc.", ticker: "COIN", assetType: "Aktie", sector: "Krypto-Börse", price: 215.30, dayChangePct: 6.80, isin: "US19260Q1076" },
-  { name: "Spotify Technology", ticker: "SPOT", assetType: "Aktie", sector: "Audio Streaming", price: 342.10, dayChangePct: 1.10, isin: "LU1778762911" },
-  { name: "Walt Disney Co.", ticker: "DIS", assetType: "Aktie", sector: "Medien & Unterhaltung", price: 96.40, dayChangePct: -0.25, isin: "US2546871060" },
-  { name: "Alibaba Group", ticker: "BABA", assetType: "Aktie", sector: "E-Commerce", price: 82.30, dayChangePct: 1.40, isin: "US01609W1027" },
-  { name: "iShares Core MSCI World ETF (Acc)", ticker: "EUNL", assetType: "ETF", sector: "Weltweit Aktien", price: 94.20, dayChangePct: 0.35, isin: "IE00B4L5Y983" },
-  { name: "Vanguard FTSE All-World ETF (Dist)", ticker: "VWRL", assetType: "ETF", sector: "Weltweit Aktien", price: 118.50, dayChangePct: 0.30, isin: "IE00B3RBWM25" },
-  { name: "Vanguard FTSE All-World ETF (Acc)", ticker: "VWCE", assetType: "ETF", sector: "Weltweit Aktien", price: 122.80, dayChangePct: 0.32, isin: "IE00BK5BQT36" },
-  { name: "iShares Core S&P 500 UCITS ETF", ticker: "SXR8", assetType: "ETF", sector: "USA Aktien", price: 540.60, dayChangePct: 0.48, isin: "IE00B5BMR087" },
-  { name: "iShares NASDAQ 100 UCITS ETF", ticker: "SXRV", assetType: "ETF", sector: "USA Tech", price: 980.40, dayChangePct: 0.92, isin: "IE00B53SZB19" },
-  { name: "Xtrackers EUR Overnight Rate (Geldmarkt)", ticker: "DBX0AN", assetType: "ETF", sector: "Geldmarkt", price: 141.25, dayChangePct: 0.01, isin: "LU0290358497" },
-  { name: "Bitcoin (BTC / EUR)", ticker: "BTC", assetType: "Krypto", sector: "Kryptowährung", price: 58400.00, dayChangePct: 2.85, isin: "BTC-EUR" },
-  { name: "Ethereum (ETH / EUR)", ticker: "ETH", assetType: "Krypto", sector: "Kryptowährung", price: 2650.00, dayChangePct: 3.40, isin: "ETH-EUR" },
-  { name: "Solana (SOL / EUR)", ticker: "SOL", assetType: "Krypto", sector: "Kryptowährung", price: 145.20, dayChangePct: 5.10, isin: "SOL-EUR" },
-  { name: "Ripple (XRP / EUR)", ticker: "XRP", assetType: "Krypto", sector: "Kryptowährung", price: 0.58, dayChangePct: 1.40, isin: "XRP-EUR" }
+  { name: "Rheinmetall AG", ticker: "RHM", assetType: "Aktie", sector: "Rüstung & Industrie", price: 492.00, dayChangePct: 2.80, isin: "DE0007030009" },
+  { name: "ASML Holding NV", ticker: "ASML", assetType: "Aktie", sector: "Halbleiter-Ausrüstung", price: 812.00, dayChangePct: 1.45, isin: "NL0010273215" },
+  { name: "Novo Nordisk B", ticker: "NOVO B", assetType: "Aktie", sector: "Pharma / Diabetes", price: 124.60, dayChangePct: -0.80, isin: "DK0062498333" },
+  { name: "Bitcoin (BTC / EUR)", ticker: "BTC", assetType: "Krypto", sector: "Kryptowährung", price: 58400.00, dayChangePct: 2.85, isin: "BTC-EUR" }
 ];
 
 const state = {
@@ -397,11 +353,22 @@ function pad2(value) {
   return String(value).padStart(2, "0");
 }
 
-function badgeStyle(ticker) {
+function badgeStyle(ticker, assetType = "Aktie") {
+  const normType = String(assetType || "").toLowerCase();
+  if (normType.includes("krypto")) {
+    return "background: linear-gradient(135deg, #f59e0b, #d97706);";
+  }
+  if (normType.includes("etf")) {
+    return "background: linear-gradient(135deg, #0284c7, #0369a1);";
+  }
+  if (normType.includes("derivat")) {
+    return "background: linear-gradient(135deg, #8b5cf6, #6d28d9);";
+  }
+
   let hash = 0;
-  for (const char of ticker) hash = (hash * 31 + char.charCodeAt(0)) % 360;
-  const hue2 = (hash + 34) % 360;
-  return `background: linear-gradient(135deg, hsl(${hash} 80% 55%), hsl(${hue2} 80% 48%));`;
+  for (const char of String(ticker || "A")) hash = (hash * 31 + char.charCodeAt(0)) % 360;
+  const hue2 = (hash + 32) % 360;
+  return `background: linear-gradient(135deg, hsl(${hash} 65% 44%), hsl(${hue2} 65% 36%));`;
 }
 
 function tickerBadge(ticker) {
@@ -575,10 +542,15 @@ function calcInstrument(transactions) {
   const dayChange = currentValue * (dayChangePct / 100);
   const averageCost = openQty ? costBasis / openQty : 0;
 
+  const catalog = (typeof window !== "undefined" && window.STOCK_CATALOG) ? window.STOCK_CATALOG : (typeof STOCK_CATALOG !== "undefined" ? STOCK_CATALOG : []);
+  const catalogEntry = catalog.find(s => s.ticker === latest.ticker);
+  const isin = latest.isin || catalogEntry?.isin || "";
+
   return {
     id: latest.instrumentId,
     ticker: latest.ticker,
     name: latest.name,
+    isin,
     assetType: latest.assetType,
     sector: latest.sector,
     note: latest.note,
@@ -691,11 +663,23 @@ function buildHistoryForRange(total, invested, rangeKey) {
 }
 
 function buildInstrumentHistory(instrument, rangeKey) {
-  const current = normalizeNumber(instrument.currentValue, 0);
-  const invested = normalizeNumber(instrument.costBasis, 0);
+  if (!instrument) return [];
+  const ticker = instrument.ticker ? instrument.ticker.toUpperCase() : "";
+  const cacheKey = `${ticker}:${rangeKey}`;
+  if (state.api?.historyCache?.has(cacheKey)) {
+    const candles = state.api.historyCache.get(cacheKey);
+    if (Array.isArray(candles) && candles.length >= 2) {
+      return candles;
+    }
+  }
+
+  const current = normalizeNumber(instrument.currentPrice || instrument.price || instrument.currentValue || 100, 100);
   const preset = chartRanges[rangeKey] || chartRanges["1W"];
 
   if (rangeKey === "SINCE") {
+    const invested = instrument.isOwned && instrument.costBasis && instrument.openQty > 0
+      ? (instrument.costBasis / instrument.openQty)
+      : current * 0.92;
     return buildSeries(invested, current, preset.points, 0.012);
   }
 
@@ -937,10 +921,14 @@ function setRange(rangeKey) {
   renderDashboardChart();
   renderPortfolioChart();
 
-  if (state.selectedId && state.detailMode === "position") {
-    const instrument = state.instruments.find(item => item.id === state.selectedId);
+  if ((state.selectedId || state.selectedInstrument) && state.detailMode === "position" && els.detailBackdrop.classList.contains("show")) {
+    const instrument = state.selectedInstrument || resolveInstrument(state.selectedId);
     if (instrument) {
-      renderChart(els.detailChart, buildInstrumentHistory(instrument, state.range), els.detailChartMeta, 260, state.range);
+      const points = buildInstrumentHistory(instrument, state.range);
+      renderChart(els.detailChart, points, els.detailChartMeta, 260, state.range);
+      if (typeof enrichInstrumentLiveData === "function") {
+        enrichInstrumentLiveData(instrument);
+      }
     }
   }
 }
@@ -1071,7 +1059,39 @@ function filteredInstruments() {
   }));
 }
 
+window.onAssetLogoError = function (img) {
+  if (!img) return;
+  const fallbackSrc = img.getAttribute("data-fallback");
+  if (fallbackSrc && img.src !== fallbackSrc) {
+    img.removeAttribute("data-fallback");
+    img.src = fallbackSrc;
+    return;
+  }
+  img.style.display = "none";
+  const parent = img.parentElement;
+  if (parent) {
+    const fallbackEl = parent.querySelector(".asset-fallback-badge");
+    if (fallbackEl) {
+      fallbackEl.style.display = "flex";
+    }
+  }
+};
+
+const LOGO_TICKER_ALIASES = {
+  "NOVO B": "NVO",
+  "VOLV B": "VOLVB",
+  "BRK B": "BRK.B",
+  "BRK-B": "BRK.B",
+  "MC": "LVMUY",
+  "ABI": "BUD",
+  "NOVN": "NVS",
+  "UBSG": "UBS",
+  "STLAM": "STLA",
+  "DBK": "DB"
+};
+
 const PRESET_LOGOS = {
+  // US Mega-Caps & Tech
   TSLA: "https://assets.parqet.com/logos/symbol/TSLA",
   AAPL: "https://assets.parqet.com/logos/symbol/AAPL",
   MSFT: "https://assets.parqet.com/logos/symbol/MSFT",
@@ -1081,48 +1101,378 @@ const PRESET_LOGOS = {
   GOOG: "https://assets.parqet.com/logos/symbol/GOOGL",
   META: "https://assets.parqet.com/logos/symbol/META",
   NFLX: "https://assets.parqet.com/logos/symbol/NFLX",
-  BTC: "https://assets.parqet.com/logos/symbol/BTC",
-  ETH: "https://assets.parqet.com/logos/symbol/ETH",
-  SXR8: "https://assets.parqet.com/logos/symbol/SXR8",
-  VWCE: "https://assets.parqet.com/logos/symbol/VWCE",
-  DBX0AN: "https://assets.parqet.com/logos/symbol/DBX0AN",
-  SAP: "https://assets.parqet.com/logos/symbol/SAP",
-  ALV: "https://assets.parqet.com/logos/symbol/ALV",
-  VOW3: "https://assets.parqet.com/logos/symbol/VOW3",
-  BMW: "https://assets.parqet.com/logos/symbol/BMW",
-  SIE: "https://assets.parqet.com/logos/symbol/SIE",
+  AVGO: "https://assets.parqet.com/logos/symbol/AVGO",
+  ADBE: "https://assets.parqet.com/logos/symbol/ADBE",
+  ORCL: "https://assets.parqet.com/logos/symbol/ORCL",
+  CSCO: "https://assets.parqet.com/logos/symbol/CSCO",
+  IBM: "https://assets.parqet.com/logos/symbol/IBM",
+  INTU: "https://assets.parqet.com/logos/symbol/INTU",
+  SMCI: "https://assets.parqet.com/logos/symbol/SMCI",
+  MSTR: "https://assets.parqet.com/logos/symbol/MSTR",
+  DELL: "https://assets.parqet.com/logos/symbol/DELL",
+
+  // Cloud, Cyber & SaaS
+  NET: "https://assets.parqet.com/logos/symbol/NET",
+  CRWD: "https://assets.parqet.com/logos/symbol/CRWD",
+  PLTR: "https://assets.parqet.com/logos/symbol/PLTR",
+  SNOW: "https://assets.parqet.com/logos/symbol/SNOW",
+  DDOG: "https://assets.parqet.com/logos/symbol/DDOG",
+  PANW: "https://assets.parqet.com/logos/symbol/PANW",
+  FTNT: "https://assets.parqet.com/logos/symbol/FTNT",
+  ZS: "https://assets.parqet.com/logos/symbol/ZS",
+  S: "https://assets.parqet.com/logos/symbol/S",
+  MDB: "https://assets.parqet.com/logos/symbol/MDB",
+  OKTA: "https://assets.parqet.com/logos/symbol/OKTA",
+  SHOP: "https://assets.parqet.com/logos/symbol/SHOP",
+  TEAM: "https://assets.parqet.com/logos/symbol/TEAM",
+  NOW: "https://assets.parqet.com/logos/symbol/NOW",
+  CRM: "https://assets.parqet.com/logos/symbol/CRM",
+  WDAY: "https://assets.parqet.com/logos/symbol/WDAY",
+  HUBS: "https://assets.parqet.com/logos/symbol/HUBS",
+  DOCU: "https://assets.parqet.com/logos/symbol/DOCU",
+  ZM: "https://assets.parqet.com/logos/symbol/ZM",
+  TWLO: "https://assets.parqet.com/logos/symbol/TWLO",
+  ESTC: "https://assets.parqet.com/logos/symbol/ESTC",
+  DT: "https://assets.parqet.com/logos/symbol/DT",
+  PATH: "https://assets.parqet.com/logos/symbol/PATH",
+
+  // Halbleiter
+  TSM: "https://assets.parqet.com/logos/symbol/TSM",
+  ASML: "https://assets.parqet.com/logos/symbol/ASML",
   AMD: "https://assets.parqet.com/logos/symbol/AMD",
+  QCOM: "https://assets.parqet.com/logos/symbol/QCOM",
   INTC: "https://assets.parqet.com/logos/symbol/INTC",
+  AMAT: "https://assets.parqet.com/logos/symbol/AMAT",
+  LRCX: "https://assets.parqet.com/logos/symbol/LRCX",
+  KLAC: "https://assets.parqet.com/logos/symbol/KLAC",
+  MU: "https://assets.parqet.com/logos/symbol/MU",
+  ARM: "https://assets.parqet.com/logos/symbol/ARM",
+  MRVL: "https://assets.parqet.com/logos/symbol/MRVL",
+  TXN: "https://assets.parqet.com/logos/symbol/TXN",
+  SNPS: "https://assets.parqet.com/logos/symbol/SNPS",
+  CDNS: "https://assets.parqet.com/logos/symbol/CDNS",
+
+  // German DAX / MDAX
+  SAP: "https://assets.parqet.com/logos/symbol/SAP",
+  SIE: "https://assets.parqet.com/logos/symbol/SIE",
+  ALV: "https://assets.parqet.com/logos/symbol/ALV",
+  DTE: "https://assets.parqet.com/logos/symbol/DTE",
+  MBG: "https://assets.parqet.com/logos/symbol/MBG",
+  BMW: "https://assets.parqet.com/logos/symbol/BMW",
+  VOW3: "https://assets.parqet.com/logos/symbol/VOW3",
+  P911: "https://assets.parqet.com/logos/symbol/P911",
+  PAH3: "https://assets.parqet.com/logos/symbol/PAH3",
+  RHM: "https://assets.parqet.com/logos/symbol/RHM",
+  MUV2: "https://assets.parqet.com/logos/symbol/MUV2",
+  DBK: "https://assets.parqet.com/logos/symbol/DBK",
+  CBK: "https://assets.parqet.com/logos/symbol/CBK",
+  BAS: "https://assets.parqet.com/logos/symbol/BAS",
+  BAYN: "https://assets.parqet.com/logos/symbol/BAYN",
+  DHL: "https://assets.parqet.com/logos/symbol/DHL",
+  CON: "https://assets.parqet.com/logos/symbol/CON",
+  HEI: "https://assets.parqet.com/logos/symbol/HEI",
+  EOAN: "https://assets.parqet.com/logos/symbol/EOAN",
+  RWE: "https://assets.parqet.com/logos/symbol/RWE",
+  BEI: "https://assets.parqet.com/logos/symbol/BEI",
+  HEN3: "https://assets.parqet.com/logos/symbol/HEN3",
+  SY1: "https://assets.parqet.com/logos/symbol/SY1",
+  SRT3: "https://assets.parqet.com/logos/symbol/SRT3",
+  QIA: "https://assets.parqet.com/logos/symbol/QIA",
+  SHL: "https://assets.parqet.com/logos/symbol/SHL",
+  ENR: "https://assets.parqet.com/logos/symbol/ENR",
+  FRE: "https://assets.parqet.com/logos/symbol/FRE",
+  FME: "https://assets.parqet.com/logos/symbol/FME",
+  VNA: "https://assets.parqet.com/logos/symbol/VNA",
+  MTX: "https://assets.parqet.com/logos/symbol/MTX",
+  HNR1: "https://assets.parqet.com/logos/symbol/HNR1",
+  BNR: "https://assets.parqet.com/logos/symbol/BNR",
+  ADS: "https://assets.parqet.com/logos/symbol/ADS",
+  PUM: "https://assets.parqet.com/logos/symbol/PUM",
+  ZAL: "https://assets.parqet.com/logos/symbol/ZAL",
+  HFG: "https://assets.parqet.com/logos/symbol/HFG",
+  DHER: "https://assets.parqet.com/logos/symbol/DHER",
+  G24: "https://assets.parqet.com/logos/symbol/G24",
+  NEM: "https://assets.parqet.com/logos/symbol/NEM",
+  EVD: "https://assets.parqet.com/logos/symbol/EVD",
+  HAGG: "https://assets.parqet.com/logos/symbol/HAGG",
+  R3NK: "https://assets.parqet.com/logos/symbol/R3NK",
+  AFX: "https://assets.parqet.com/logos/symbol/AFX",
+  NDX1: "https://assets.parqet.com/logos/symbol/NDX1",
+  S92: "https://assets.parqet.com/logos/symbol/S92",
+  EVT: "https://assets.parqet.com/logos/symbol/EVT",
+  KBX: "https://assets.parqet.com/logos/symbol/KBX",
+  TKA: "https://assets.parqet.com/logos/symbol/TKA",
+  TUI1: "https://assets.parqet.com/logos/symbol/TUI1",
+  BC8: "https://assets.parqet.com/logos/symbol/BC8",
+  TMV: "https://assets.parqet.com/logos/symbol/TMV",
+  IFX: "https://assets.parqet.com/logos/symbol/IFX",
+  AIXA: "https://assets.parqet.com/logos/symbol/AIXA",
+
+  // European & Global
+  "NOVO B": "https://assets.parqet.com/logos/isin/DK0062498333",
+  NVO: "https://assets.parqet.com/logos/symbol/NVO",
+  MC: "https://assets.parqet.com/logos/isin/FR0000121014",
+  RMS: "https://assets.parqet.com/logos/isin/FR0000052292",
+  OR: "https://assets.parqet.com/logos/isin/FR0000120321",
+  RACE: "https://assets.parqet.com/logos/symbol/RACE",
+  NESN: "https://assets.parqet.com/logos/isin/CH0038863350",
+  ROG: "https://assets.parqet.com/logos/isin/CH0012032048",
+  NOVN: "https://assets.parqet.com/logos/isin/CH0012005267",
+  NVS: "https://assets.parqet.com/logos/symbol/NVS",
+  SAN: "https://assets.parqet.com/logos/isin/FR0000120578",
+  AZN: "https://assets.parqet.com/logos/symbol/AZN",
+  TTE: "https://assets.parqet.com/logos/symbol/TTE",
+  SHEL: "https://assets.parqet.com/logos/symbol/SHEL",
+  BP: "https://assets.parqet.com/logos/symbol/BP",
+  SU: "https://assets.parqet.com/logos/isin/FR0000121972",
+  AI: "https://assets.parqet.com/logos/isin/FR0000120073",
+  AIR: "https://assets.parqet.com/logos/isin/NL0000235190",
+  IBE: "https://assets.parqet.com/logos/isin/ES0144580Y14",
+  ENEL: "https://assets.parqet.com/logos/isin/IT0003128367",
+  BNP: "https://assets.parqet.com/logos/isin/FR0000131104",
+  ISP: "https://assets.parqet.com/logos/isin/IT0000072618",
+  UBSG: "https://assets.parqet.com/logos/symbol/UBS",
+  UBS: "https://assets.parqet.com/logos/symbol/UBS",
+  STLAM: "https://assets.parqet.com/logos/symbol/STLA",
+  STLA: "https://assets.parqet.com/logos/symbol/STLA",
+  ITX: "https://assets.parqet.com/logos/isin/ES0148396007",
+  HEIA: "https://assets.parqet.com/logos/isin/NL0000009165",
+  ABI: "https://assets.parqet.com/logos/symbol/BUD",
+  BUD: "https://assets.parqet.com/logos/symbol/BUD",
+  "VOLV B": "https://assets.parqet.com/logos/isin/SE0000115446",
+  VOLVB: "https://assets.parqet.com/logos/isin/SE0000115446",
+  ADYEN: "https://assets.parqet.com/logos/symbol/ADYEN",
+  PRX: "https://assets.parqet.com/logos/isin/NL0013654783",
+  SAF: "https://assets.parqet.com/logos/isin/FR0000073272",
+  KER: "https://assets.parqet.com/logos/isin/FR0000121485",
+  RIO: "https://assets.parqet.com/logos/symbol/RIO",
+  GLEN: "https://assets.parqet.com/logos/symbol/GLEN",
+
+  // US Finance, Healthcare & Consumer
+  JPM: "https://assets.parqet.com/logos/symbol/JPM",
+  V: "https://assets.parqet.com/logos/symbol/V",
+  MA: "https://assets.parqet.com/logos/symbol/MA",
+  BAC: "https://assets.parqet.com/logos/symbol/BAC",
+  WFC: "https://assets.parqet.com/logos/symbol/WFC",
+  GS: "https://assets.parqet.com/logos/symbol/GS",
+  MS: "https://assets.parqet.com/logos/symbol/MS",
+  C: "https://assets.parqet.com/logos/symbol/C",
+  "BRK.B": "https://assets.parqet.com/logos/symbol/BRK.B",
+  BLK: "https://assets.parqet.com/logos/symbol/BLK",
+  AXP: "https://assets.parqet.com/logos/symbol/AXP",
+  HOOD: "https://assets.parqet.com/logos/symbol/HOOD",
+  SQ: "https://assets.parqet.com/logos/symbol/SQ",
   PYPL: "https://assets.parqet.com/logos/symbol/PYPL",
   COIN: "https://assets.parqet.com/logos/symbol/COIN",
-  SPOT: "https://assets.parqet.com/logos/symbol/SPOT",
+  LLY: "https://assets.parqet.com/logos/symbol/LLY",
+  JNJ: "https://assets.parqet.com/logos/symbol/JNJ",
+  PFE: "https://assets.parqet.com/logos/symbol/PFE",
+  ABBV: "https://assets.parqet.com/logos/symbol/ABBV",
+  MRK: "https://assets.parqet.com/logos/symbol/MRK",
+  TMO: "https://assets.parqet.com/logos/symbol/TMO",
+  ABT: "https://assets.parqet.com/logos/symbol/ABT",
+  DHR: "https://assets.parqet.com/logos/symbol/DHR",
+  BMY: "https://assets.parqet.com/logos/symbol/BMY",
+  AMGN: "https://assets.parqet.com/logos/symbol/AMGN",
+  GILD: "https://assets.parqet.com/logos/symbol/GILD",
+  ISRG: "https://assets.parqet.com/logos/symbol/ISRG",
+  VRTX: "https://assets.parqet.com/logos/symbol/VRTX",
+  REGN: "https://assets.parqet.com/logos/symbol/REGN",
+  MRNA: "https://assets.parqet.com/logos/symbol/MRNA",
+  BNTX: "https://assets.parqet.com/logos/symbol/BNTX",
+  LMT: "https://assets.parqet.com/logos/symbol/LMT",
+  RTX: "https://assets.parqet.com/logos/symbol/RTX",
+  BA: "https://assets.parqet.com/logos/symbol/BA",
+  NOC: "https://assets.parqet.com/logos/symbol/NOC",
+  GD: "https://assets.parqet.com/logos/symbol/GD",
+  PLD: "https://assets.parqet.com/logos/symbol/PLD",
+  AMT: "https://assets.parqet.com/logos/symbol/AMT",
+  EQIX: "https://assets.parqet.com/logos/symbol/EQIX",
+  O: "https://assets.parqet.com/logos/symbol/O",
+  XOM: "https://assets.parqet.com/logos/symbol/XOM",
+  CVX: "https://assets.parqet.com/logos/symbol/CVX",
+  COP: "https://assets.parqet.com/logos/symbol/COP",
+  SLB: "https://assets.parqet.com/logos/symbol/SLB",
+  NEE: "https://assets.parqet.com/logos/symbol/NEE",
+  DUK: "https://assets.parqet.com/logos/symbol/DUK",
+  SO: "https://assets.parqet.com/logos/symbol/SO",
+  WMT: "https://assets.parqet.com/logos/symbol/WMT",
+  PG: "https://assets.parqet.com/logos/symbol/PG",
+  COST: "https://assets.parqet.com/logos/symbol/COST",
+  KO: "https://assets.parqet.com/logos/symbol/KO",
+  PEP: "https://assets.parqet.com/logos/symbol/PEP",
+  HD: "https://assets.parqet.com/logos/symbol/HD",
+  MCD: "https://assets.parqet.com/logos/symbol/MCD",
+  NKE: "https://assets.parqet.com/logos/symbol/NKE",
+  SBUX: "https://assets.parqet.com/logos/symbol/SBUX",
+  LOW: "https://assets.parqet.com/logos/symbol/LOW",
+  TGT: "https://assets.parqet.com/logos/symbol/TGT",
+  UBER: "https://assets.parqet.com/logos/symbol/UBER",
+  ABNB: "https://assets.parqet.com/logos/symbol/ABNB",
+  BKNG: "https://assets.parqet.com/logos/symbol/BKNG",
+  MAR: "https://assets.parqet.com/logos/symbol/MAR",
+  CMG: "https://assets.parqet.com/logos/symbol/CMG",
   DIS: "https://assets.parqet.com/logos/symbol/DIS",
-  BABA: "https://assets.parqet.com/logos/symbol/BABA"
+  SPOT: "https://assets.parqet.com/logos/symbol/SPOT",
+  F: "https://assets.parqet.com/logos/symbol/F",
+  GM: "https://assets.parqet.com/logos/symbol/GM",
+  RIVN: "https://assets.parqet.com/logos/symbol/RIVN",
+  LCID: "https://assets.parqet.com/logos/symbol/LCID",
+  NIO: "https://assets.parqet.com/logos/symbol/NIO",
+  LI: "https://assets.parqet.com/logos/symbol/LI",
+  XPEV: "https://assets.parqet.com/logos/symbol/XPEV",
+  BABA: "https://assets.parqet.com/logos/symbol/BABA",
+  TCEHY: "https://assets.parqet.com/logos/symbol/TCEHY",
+  PDD: "https://assets.parqet.com/logos/symbol/PDD",
+  JD: "https://assets.parqet.com/logos/symbol/JD",
+  BIDU: "https://assets.parqet.com/logos/symbol/BIDU",
+  NTES: "https://assets.parqet.com/logos/symbol/NTES",
+  SE: "https://assets.parqet.com/logos/symbol/SE",
+  GRAB: "https://assets.parqet.com/logos/symbol/GRAB",
+  NU: "https://assets.parqet.com/logos/symbol/NU",
+  MELI: "https://assets.parqet.com/logos/symbol/MELI",
+  SONY: "https://assets.parqet.com/logos/symbol/SONY",
+  NTDOY: "https://assets.parqet.com/logos/symbol/NTDOY",
+  TM: "https://assets.parqet.com/logos/symbol/TM",
+  HMC: "https://assets.parqet.com/logos/symbol/HMC",
+
+  // ETFs & Krypto
+  SXR8: "https://assets.parqet.com/logos/isin/IE00B5BMR087",
+  VWCE: "https://assets.parqet.com/logos/isin/IE00BK5BQT80",
+  EUNL: "https://assets.parqet.com/logos/isin/IE00B4L5Y983",
+  DBX0AN: "https://assets.parqet.com/logos/isin/LU0290358497",
+  QDVE: "https://assets.parqet.com/logos/isin/IE00B3WJKG14",
+  EXXT: "https://assets.parqet.com/logos/isin/DE000A0F5UF5",
+  IS3N: "https://assets.parqet.com/logos/isin/IE00BKM4GZ66",
+  IUSN: "https://assets.parqet.com/logos/isin/IE00BF4RFH31",
+  "2B76": "https://assets.parqet.com/logos/isin/IE00BYZK4552",
+  VGVF: "https://assets.parqet.com/logos/isin/IE00BKX55T58",
+  DAXEX: "https://assets.parqet.com/logos/isin/DE0005933931",
+  BTC: "https://assets.parqet.com/logos/symbol/BTC",
+  ETH: "https://assets.parqet.com/logos/symbol/ETH",
+  SOL: "https://assets.parqet.com/logos/symbol/SOL",
+  BNB: "https://assets.parqet.com/logos/symbol/BNB",
+  XRP: "https://assets.parqet.com/logos/symbol/XRP",
+  ADA: "https://assets.parqet.com/logos/symbol/ADA",
+  AVAX: "https://assets.parqet.com/logos/symbol/AVAX",
+  DOT: "https://assets.parqet.com/logos/symbol/DOT",
+  LINK: "https://assets.parqet.com/logos/symbol/LINK",
+  DOGE: "https://assets.parqet.com/logos/symbol/DOGE"
 };
 
+function getLogoCandidateUrls(instrument) {
+  const ticker = String(instrument?.ticker || "").trim().toUpperCase();
+  const isin = String(instrument?.isin || "").trim().toUpperCase();
+  const urls = [];
+
+  // 1. Live Finnhub profile logo if available
+  if (state.api?.profiles?.[ticker]?.logo) {
+    urls.push(state.api.profiles[ticker].logo);
+  }
+
+  // 2. Preset logo direct mapping
+  if (PRESET_LOGOS[ticker]) {
+    urls.push(PRESET_LOGOS[ticker]);
+  }
+
+  // 3. Known ticker alias mapping
+  const mappedTicker = LOGO_TICKER_ALIASES[ticker] || ticker;
+  if (mappedTicker !== ticker && PRESET_LOGOS[mappedTicker]) {
+    urls.push(PRESET_LOGOS[mappedTicker]);
+  }
+
+  // 4. Parqet ISIN URL (extremely reliable for German, European & Global stocks)
+  if (isin && isin.length === 12) {
+    const isinUrl = `https://assets.parqet.com/logos/isin/${encodeURIComponent(isin)}`;
+    if (!urls.includes(isinUrl)) urls.push(isinUrl);
+  }
+
+  // 5. Parqet symbol URL for the clean symbol
+  const cleanSymbol = mappedTicker.replace(/\s+/g, "");
+  if (cleanSymbol) {
+    const symbolUrl = `https://assets.parqet.com/logos/symbol/${encodeURIComponent(cleanSymbol)}`;
+    if (!urls.includes(symbolUrl)) urls.push(symbolUrl);
+  }
+
+  // 6. Original symbol if distinct
+  const origClean = ticker.replace(/\s+/g, "");
+  if (origClean && origClean !== cleanSymbol) {
+    const origUrl = `https://assets.parqet.com/logos/symbol/${encodeURIComponent(origClean)}`;
+    if (!urls.includes(origUrl)) urls.push(origUrl);
+  }
+
+  return urls;
+}
+
 function getLogoUrl(ticker) {
-  const symbol = String(ticker || "").trim().toUpperCase();
-  if (!symbol) return "";
-  if (state.api?.profiles?.[symbol]?.logo) {
-    return state.api.profiles[symbol].logo;
+  const urls = getLogoCandidateUrls({ ticker });
+  return urls[0] || "";
+}
+
+function fallbackIconMarkup(instrument) {
+  const ticker = String(instrument?.ticker || "").trim().toUpperCase();
+  const name = String(instrument?.name || "").trim();
+  const assetType = String(instrument?.assetType || "Aktie");
+
+  let initials = ticker.slice(0, 3).replace(/[^A-Z0-9]/g, "");
+  if (!initials && name) {
+    const parts = name.split(/\s+/).filter(Boolean);
+    initials = parts.length > 1 
+      ? (parts[0][0] + parts[1][0]).toUpperCase()
+      : name.slice(0, 2).toUpperCase();
   }
-  if (PRESET_LOGOS[symbol]) {
-    return PRESET_LOGOS[symbol];
+  if (!initials) initials = "WP";
+
+  if (assetType === "Krypto") {
+    const cryptoIcons = {
+      BTC: "₿", ETH: "Ξ", SOL: "◎", BNB: "BNB", XRP: "✕", ADA: "₳", AVAX: "▲", DOT: "●", LINK: "⬡", DOGE: "Ð"
+    };
+    const symbolText = cryptoIcons[ticker] || initials.slice(0, 3);
+    return `<span class="badge-icon-text">${escapeHtml(symbolText)}</span>`;
   }
-  return `https://assets.parqet.com/logos/symbol/${encodeURIComponent(symbol)}`;
+
+  if (assetType === "ETF") {
+    return `<span class="badge-icon-text etf-text">${escapeHtml(initials.length > 2 ? initials.slice(0, 2) : initials)}</span>`;
+  }
+
+  if (assetType === "Derivat") {
+    return `<span class="badge-icon-text">⚡</span>`;
+  }
+
+  return `<span class="badge-icon-text">${escapeHtml(initials.slice(0, 2))}</span>`;
 }
 
 function logoMarkup(instrument, className = "asset-badge") {
   const ticker = String(instrument?.ticker || "").trim().toUpperCase();
   const name = String(instrument?.name || ticker).trim();
+  const isin = String(instrument?.isin || "").trim().toUpperCase();
+  const assetType = instrument?.assetType || "Aktie";
   const idAttr = className.includes("detail-badge") ? ' id="detailBadge"' : "";
-  const logoUrl = getLogoUrl(ticker);
 
-  if (logoUrl) {
-    return `<img${idAttr} class="${className} asset-logo" src="${escapeHtml(logoUrl)}" alt="${escapeHtml(name)} Logo" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='grid';" /><div ${idAttr ? 'id="detailBadgeFallback"' : ''} class="${className}" style="display:none; ${badgeStyle(ticker)}">${tickerBadge(ticker)}</div>`;
+  const urls = getLogoCandidateUrls(instrument || { ticker, name, isin, assetType });
+  const primaryUrl = urls[0] || "";
+  const fallbackUrl = urls[1] || "";
+  const fallbackContent = fallbackIconMarkup(instrument || { ticker, name, isin, assetType });
+  const fallbackCss = badgeStyle(ticker, assetType);
+
+  if (primaryUrl) {
+    return `
+      <div${idAttr} class="${className} asset-badge-wrap">
+        <img class="asset-logo-img" src="${escapeHtml(primaryUrl)}" ${fallbackUrl ? `data-fallback="${escapeHtml(fallbackUrl)}"` : ""} alt="${escapeHtml(name)} Logo" loading="lazy" referrerpolicy="no-referrer" onerror="window.onAssetLogoError ? window.onAssetLogoError(this) : (this.style.display='none', (this.nextElementSibling && (this.nextElementSibling.style.display='flex')))" />
+        <div class="asset-fallback-badge" style="display:none; ${fallbackCss}">
+          ${fallbackContent}
+        </div>
+      </div>
+    `.trim();
   }
 
-  return `<div${idAttr} class="${className}" style="${badgeStyle(ticker)}">${tickerBadge(ticker)}</div>`;
+  return `
+    <div${idAttr} class="${className} asset-badge-wrap">
+      <div class="asset-fallback-badge" style="display:flex; ${fallbackCss}">
+        ${fallbackContent}
+      </div>
+    </div>
+  `.trim();
 }
 
 function sparklineSvg(instrument, width = 100, height = 32) {
@@ -1356,12 +1706,14 @@ function renderWatchlist() {
   const ownedWatch = getActiveInstruments().filter(item => item.watch);
   const unownedWatchTickers = (state.watchlist || []).filter(ticker => !state.instruments.some(i => i.ticker === ticker && i.openQty > 0));
   
+  const catalog = (typeof window !== "undefined" && window.STOCK_CATALOG) ? window.STOCK_CATALOG : STOCK_CATALOG;
   const unownedWatchItems = unownedWatchTickers.map(ticker => {
-    const catalogItem = STOCK_CATALOG.find(s => s.ticker === ticker) || {
+    const catalogItem = catalog.find(s => s.ticker === ticker) || {
       name: ticker,
       ticker,
       assetType: "Aktie",
       sector: "Beobachtung",
+      isin: "",
       price: 100,
       dayChangePct: 0
     };
@@ -1369,9 +1721,11 @@ function renderWatchlist() {
       id: `catalog_${ticker}`,
       ticker,
       name: catalogItem.name,
+      isin: catalogItem.isin || "",
       assetType: catalogItem.assetType,
       sector: catalogItem.sector,
       currentPrice: catalogItem.price,
+      price: catalogItem.price,
       dayChangePct: catalogItem.dayChangePct,
       isCatalog: true,
       watch: true
@@ -1383,7 +1737,7 @@ function renderWatchlist() {
   if (!allWatchItems.length) {
     els.watchlistList.innerHTML = emptyStateCard(
       "Watchlist leer",
-      "Suche nach Wertpapieren wie Tesla, Apple oder Bitcoin und füge sie deiner Watchlist hinzu.",
+      "Suche nach Wertpapieren wie Cloudflare, Tesla, Nvidia oder Bitcoin und klicke auf die Aktie oder den Watchlist-Stern.",
       "🔍 Wertpapiere suchen"
     );
     els.watchlistList.querySelectorAll('[data-action="add-first"]').forEach(button => {
@@ -1401,8 +1755,8 @@ function renderWatchlist() {
       </div>
       <div class="watch-spark">${sparklineSvg(item, 120, 38)}</div>
       <div class="watch-stats">
-        <span class="${item.dayChangePct >= 0 ? "good" : "bad"}">${signedPct(item.dayChangePct)}</span>
-        <strong>${money(item.currentPrice)}</strong>
+        <span class="${(item.dayChangePct || 0) >= 0 ? "good" : "bad"}">${signedPct(item.dayChangePct || 0)}</span>
+        <strong>${money(item.currentPrice || item.price || 0)}</strong>
       </div>
       <div class="watch-actions" style="margin-left: 10px; display: flex; gap: 6px;">
         <button class="search-action-btn" data-action="buy-watch" type="button" title="Buchung hinzufügen">＋ Buchung</button>
@@ -1415,22 +1769,26 @@ function renderWatchlist() {
     const isCatalog = card.dataset.catalog === "true";
     const id = card.dataset.id;
     const ticker = card.dataset.ticker;
+    const catalogItem = catalog.find(s => s.ticker === ticker) || { name: ticker, ticker };
 
+    // Clicking the card opens the full chart & analysis detail sheet!
     card.addEventListener("click", (e) => {
       if (e.target.closest("button")) return;
-      if (!isCatalog) {
-        openInstrumentDetail(id);
+      openInstrumentDetail(isCatalog ? catalogItem : (id || ticker));
+    });
+
+    // Clicking '＋ Buchung' opens booking editor
+    card.querySelector('[data-action="buy-watch"]')?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const resolved = resolveInstrument(ticker);
+      if (resolved && resolved.isOwned) {
+        openEditor(resolved.id, null, "add_transaction");
       } else {
-        openEditorForCatalogItem(STOCK_CATALOG.find(s => s.ticker === ticker) || { name: ticker, ticker });
+        openEditorForCatalogItem(catalogItem);
       }
     });
 
-    card.querySelector('[data-action="buy-watch"]')?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const cat = STOCK_CATALOG.find(s => s.ticker === ticker) || { name: ticker, ticker };
-      openEditorForCatalogItem(cat);
-    });
-
+    // Clicking '★' toggles watchlist
     card.querySelector('[data-action="remove-watch"]')?.addEventListener("click", (e) => {
       e.stopPropagation();
       toggleWatchlistTicker(ticker);
@@ -1826,115 +2184,116 @@ function deleteTransaction(txId) {
   renderAll();
 }
 
-function openInstrumentDetail(id) {
-  const instrument = state.instruments.find(item => item.id === id);
-  if (!instrument) return;
+function resolveInstrument(target) {
+  if (!target) return null;
+  const catalog = (typeof window !== "undefined" && window.STOCK_CATALOG) ? window.STOCK_CATALOG : STOCK_CATALOG;
 
-  state.selectedId = id;
-  state.detailMode = "position";
+  if (typeof target === "object" && target.ticker) {
+    const ticker = String(target.ticker).toUpperCase().trim();
+    // 1. Check if user already holds an open position
+    const owned = state.instruments.find(i => i.ticker === ticker && i.openQty > 0);
+    if (owned) return owned;
 
-  lockBodyScroll();
-  showBackdrop(els.detailBackdrop);
-  els.detailBackdrop.dataset.mode = "position";
+    // 2. Resolve catalog data
+    const catalogItem = catalog.find(s => s.ticker === ticker) || target;
+    const isWatch = (state.watchlist || []).includes(ticker) || Boolean(target.watch);
+    const price = normalizeNumber(target.currentPrice || target.price || catalogItem.price || 100, 100);
+    const dayChangePct = normalizeNumber(target.dayChangePct ?? catalogItem.dayChangePct ?? 0, 0);
+    const dayChange = (price * dayChangePct) / 100;
+    const isin = target.isin || catalogItem.isin || `US${ticker.padEnd(8, "0")}101`;
+    const sector = target.sector || catalogItem.sector || "Wertpapier";
+    const name = target.name || catalogItem.name || ticker;
+    const assetType = target.assetType || catalogItem.assetType || "Aktie";
 
-  els.addTransactionBtn?.classList.remove("hidden");
-  els.editPositionBtn.classList.remove("hidden");
-  els.deletePositionBtn.classList.remove("hidden");
-  els.toggleWatch.classList.remove("hidden");
-  els.detailChartHead.style.display = "flex";
-  els.detailChartWrap.style.display = "block";
-  els.detailTransactionsWrap.style.display = "block";
+    return {
+      id: `catalog_${ticker}`,
+      ticker,
+      name,
+      assetType,
+      sector,
+      isin,
+      currentPrice: price,
+      price,
+      dayChangePct,
+      dayChange,
+      dayHigh: price * (1 + Math.abs(dayChangePct) * 0.008 + 0.012),
+      dayLow: price * (1 - Math.abs(dayChangePct) * 0.008 - 0.012),
+      high52: price * 1.35,
+      low52: price * 0.72,
+      isOwned: false,
+      watch: isWatch,
+      transactions: [],
+      openQty: 0,
+      costBasis: 0,
+      currentValue: 0,
+      averageCost: 0,
+      unrealizedGain: 0,
+      realizedGain: 0,
+      totalGain: 0,
+      gainPct: 0
+    };
+  }
 
-  els.detailBadge.outerHTML = logoMarkup(instrument, "detail-badge");
-  els.detailBadge = document.getElementById("detailBadge") || document.querySelector(".detail-badge");
+  // target is string ID or Ticker
+  const idStr = String(target);
+  const byId = state.instruments.find(i => i.id === idStr);
+  if (byId) return byId;
 
-  els.detailEyebrow.textContent = "Position";
-  els.detailTitle.textContent = instrument.name;
-  els.detailSubtitle.textContent = `${instrument.ticker} · ${instrument.assetType} · ${instrument.openQty.toLocaleString("de-DE")} Stück gehalten`;
+  const byTicker = state.instruments.find(i => i.ticker === idStr.toUpperCase());
+  if (byTicker) return byTicker;
 
-  els.toggleWatch.style.display = "inline-flex";
-  els.toggleWatch.textContent = instrument.watch ? "★ Aus Watchlist entfernen" : "☆ Zur Watchlist";
+  const cleanTicker = idStr.replace(/^catalog_/, "").toUpperCase();
+  const catalogItem = catalog.find(s => s.ticker === cleanTicker) || { name: cleanTicker, ticker: cleanTicker };
+  return resolveInstrument(catalogItem);
+}
 
-  els.detailMetrics.style.display = "grid";
-  els.detailMetrics.innerHTML = `
-    <div class="detail-card">
-      <span>Aktueller Livekurs</span>
-      <strong>${money(instrument.currentPrice)}</strong>
-    </div>
-    <div class="detail-card">
-      <span>Marktwert gesamt</span>
-      <strong>${money(instrument.currentValue)}</strong>
-    </div>
-    <div class="detail-card">
-      <span>Tagesveränderung</span>
-      <strong class="${instrument.dayChangePct >= 0 ? "good" : "bad"}">${signedPct(instrument.dayChangePct)} (${signedMoney(instrument.dayChange)})</strong>
-    </div>
-    <div class="detail-card">
-      <span>Ø Kaufpreis</span>
-      <strong>${money(instrument.averageCost)}</strong>
-    </div>
-    <div class="detail-card">
-      <span>Gesamteinstand (Cost-Basis)</span>
-      <strong>${money(instrument.costBasis)}</strong>
-    </div>
-    <div class="detail-card">
-      <span>Unrealisierter Gewinn</span>
-      <strong class="${instrument.unrealizedGain >= 0 ? "good" : "bad"}">${signedMoney(instrument.unrealizedGain)}</strong>
-    </div>
-    <div class="detail-card">
-      <span>Realisierter Gewinn</span>
-      <strong class="${instrument.realizedGain >= 0 ? "good" : "bad"}">${signedMoney(instrument.realizedGain)}</strong>
-    </div>
-    <div class="detail-card">
-      <span>Gesamtperformance</span>
-      <strong class="${instrument.totalGain >= 0 ? "good" : "bad"}">${signedMoney(instrument.totalGain)} (${signedPct(instrument.gainPct)})</strong>
-    </div>
-  `;
+async function enrichInstrumentLiveData(instrument) {
+  if (!state.api?.manager || !hasLiveApi()) return;
+  const ticker = instrument.ticker?.toUpperCase();
+  if (!ticker) return;
 
-  els.detailTransactions.innerHTML = instrument.transactions.map(tx => {
-    const stamp = [formatDateDisplay(tx.date), formatTimeDisplay(tx.time)].filter(Boolean).join(" · ");
-    const total = tx.qty * tx.price;
-    const kindLabel = tx.kind === "sell" ? "Verkauf" : "Kauf";
-    return `
-      <article class="transaction-row" data-tx-id="${escapeHtml(tx.id)}">
-        <div class="transaction-kind ${tx.kind}">${kindLabel}</div>
-        <div class="transaction-meta">
-          <strong>${escapeHtml(stamp || "—")}</strong>
-          <small>${tx.qty.toLocaleString("de-DE")} Stk zu je ${money(tx.price)} · Gebühren: ${money(tx.fee)}</small>
-          ${tx.note ? `<small>${escapeHtml(tx.note)}</small>` : ""}
-        </div>
-        <div class="transaction-values">
-          <strong>${money(total)}</strong>
-          <small>${tx.kind === "sell" ? "Zufluss" : "Abfluss"}</small>
-        </div>
-        <div class="transaction-actions">
-          <button class="action-icon-btn" data-action="edit-tx" type="button" title="Buchung bearbeiten">✏️</button>
-          <button class="action-icon-btn danger" data-action="delete-tx" type="button" title="Buchung löschen">🗑️</button>
-        </div>
-      </article>
-    `;
-  }).join("");
+  try {
+    const candles = await state.api.manager.getCandles(ticker, state.range);
+    if (Array.isArray(candles) && candles.length >= 2) {
+      if (!state.api.historyCache) state.api.historyCache = new Map();
+      state.api.historyCache.set(`${ticker}:${state.range}`, candles);
+      
+      if (state.selectedInstrument?.ticker === ticker && els.detailBackdrop.classList.contains("show")) {
+        renderChart(els.detailChart, candles, els.detailChartMeta, 260, state.range);
+      }
+    }
+  } catch (err) {
+    console.warn("Could not load candles for", ticker, err);
+  }
 
-  els.detailTransactions.querySelectorAll("[data-action='edit-tx']").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const row = e.currentTarget.closest(".transaction-row");
-      if (row?.dataset.txId) openEditor(instrument.id, row.dataset.txId, "edit_tx");
-    });
-  });
+  try {
+    const quote = await state.api.manager.getQuote(ticker);
+    if (quote && quote.currentPrice > 0) {
+      instrument.currentPrice = quote.currentPrice;
+      instrument.dayChangePct = quote.dayChangePct;
+      instrument.dayChange = quote.dayChange;
+      if (quote.high) instrument.dayHigh = quote.high;
+      if (quote.low) instrument.dayLow = quote.low;
+    }
+  } catch (err) {
+    console.warn("Could not load quote for", ticker, err);
+  }
 
-  els.detailTransactions.querySelectorAll("[data-action='delete-tx']").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const row = e.currentTarget.closest(".transaction-row");
-      if (row?.dataset.txId) deleteTransaction(row.dataset.txId);
-    });
-  });
+  try {
+    const news = await state.api.manager.getCompanyNews(ticker);
+    if (Array.isArray(news) && news.length > 0) {
+      if (!state.api.news) state.api.news = {};
+      state.api.news[ticker] = news;
+      if (state.selectedInstrument?.ticker === ticker && els.detailBackdrop.classList.contains("show")) {
+        renderInstrumentDetailNewsAndCta(instrument);
+      }
+    }
+  } catch (err) {
+    console.warn("Could not load news for", ticker, err);
+  }
+}
 
-  els.detailChartMeta.textContent = "";
-  renderChart(els.detailChart, buildInstrumentHistory(instrument, state.range), els.detailChartMeta, 260, state.range);
-
-  // Check for company news on German
+function renderInstrumentDetailNewsAndCta(instrument) {
   const companyNews = state.api?.news?.[instrument.ticker] || [];
   const newsHtml = companyNews.length > 0
     ? companyNews.slice(0, 3).map(news => `
@@ -1944,12 +2303,217 @@ function openInstrumentDetail(id) {
           ${news.url ? `<br/><a class="article-link" href="${escapeHtml(news.url)}" target="_blank" rel="noopener noreferrer">Original lesen →</a>` : ""}
         </div>
       `).join("")
-    : `<p>Keine aktuellen News für ${instrument.name} geladen.</p>`;
+    : `<p style="color: var(--muted); font-size: 13px;">Keine aktuellen Unternehmens-Meldungen für ${escapeHtml(instrument.name)} geladen.</p>`;
+
+  const ctaHtml = !instrument.isOwned ? `
+    <div style="margin-top: 20px; padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(56,189,248,0.05)); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div>
+        <strong style="display: block; font-size: 16px; margin-bottom: 3px;">Bereit, ${escapeHtml(instrument.name)} ins Depot zu legen?</strong>
+        <small style="color: var(--muted); font-size: 13px;">Füge deine Kauf- oder Sparplan-Buchung mit Stückzahl und Kurs hinzu.</small>
+      </div>
+      <button class="primary-btn" id="detailSheetAddTxBtn" type="button" style="padding: 10px 20px; font-weight: 700;">＋ Buchung hinzufügen</button>
+    </div>
+  ` : ``;
 
   els.detailArticle.innerHTML = `
     <h4>Unternehmens-News &amp; Details</h4>
     ${newsHtml}
+    ${ctaHtml}
   `;
+
+  document.getElementById("detailSheetAddTxBtn")?.addEventListener("click", () => {
+    if (instrument.isOwned) {
+      openEditor(instrument.id, null, "add_transaction");
+    } else {
+      openEditorForCatalogItem(instrument);
+    }
+  });
+}
+
+function openInstrumentDetail(target) {
+  const instrument = resolveInstrument(target);
+  if (!instrument) return;
+
+  state.selectedId = instrument.id;
+  state.selectedInstrument = instrument;
+  state.detailMode = "position";
+
+  lockBodyScroll();
+  showBackdrop(els.detailBackdrop);
+  els.detailBackdrop.dataset.mode = "position";
+
+  els.addTransactionBtn?.classList.remove("hidden");
+  if (els.addTransactionBtn) {
+    els.addTransactionBtn.textContent = "＋ Buchung hinzufügen";
+  }
+
+  if (instrument.isOwned) {
+    els.editPositionBtn.classList.remove("hidden");
+    els.deletePositionBtn.classList.remove("hidden");
+  } else {
+    els.editPositionBtn.classList.add("hidden");
+    els.deletePositionBtn.classList.add("hidden");
+  }
+
+  els.toggleWatch.classList.remove("hidden");
+  els.detailChartHead.style.display = "flex";
+  els.detailChartWrap.style.display = "block";
+
+  // Hide 'SINCE' (Seit Kauf) button if stock is not owned in depot
+  const sinceBtn = document.querySelector("#detailRangeSwitch [data-range='SINCE']");
+  if (sinceBtn) {
+    sinceBtn.style.display = instrument.isOwned ? "inline-block" : "none";
+    if (!instrument.isOwned && state.range === "SINCE") {
+      state.range = "1W";
+    }
+  }
+
+  // Update active state on range buttons
+  document.querySelectorAll("#detailRangeSwitch .range-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.range === state.range);
+  });
+
+  els.detailBadge.outerHTML = logoMarkup(instrument, "detail-badge");
+  els.detailBadge = document.getElementById("detailBadge") || document.querySelector(".detail-badge");
+
+  if (instrument.isOwned) {
+    els.detailEyebrow.textContent = "Position im Depot";
+    els.detailTitle.textContent = instrument.name;
+    els.detailSubtitle.textContent = `${instrument.ticker} · ${instrument.assetType} · ${instrument.openQty.toLocaleString("de-DE")} Stück gehalten`;
+  } else {
+    els.detailEyebrow.textContent = "Markt & Kursverlauf";
+    els.detailTitle.textContent = instrument.name;
+    els.detailSubtitle.textContent = `${instrument.ticker} · ${instrument.assetType} · ${instrument.sector || "Wertpapier"}`;
+  }
+
+  const isWatch = (state.watchlist || []).includes(instrument.ticker) || Boolean(instrument.watch);
+  els.toggleWatch.style.display = "inline-flex";
+  els.toggleWatch.textContent = isWatch ? "★ Aus Watchlist entfernen" : "☆ Zur Watchlist";
+
+  els.detailMetrics.style.display = "grid";
+  if (instrument.isOwned) {
+    els.detailMetrics.innerHTML = `
+      <div class="detail-card">
+        <span>Aktueller Livekurs</span>
+        <strong>${money(instrument.currentPrice)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Marktwert gesamt</span>
+        <strong>${money(instrument.currentValue)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Tagesveränderung</span>
+        <strong class="${instrument.dayChangePct >= 0 ? "good" : "bad"}">${signedPct(instrument.dayChangePct)} (${signedMoney(instrument.dayChange)})</strong>
+      </div>
+      <div class="detail-card">
+        <span>Ø Kaufpreis</span>
+        <strong>${money(instrument.averageCost)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Gesamteinstand (Cost-Basis)</span>
+        <strong>${money(instrument.costBasis)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Unrealisierter Gewinn</span>
+        <strong class="${instrument.unrealizedGain >= 0 ? "good" : "bad"}">${signedMoney(instrument.unrealizedGain)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Realisierter Gewinn</span>
+        <strong class="${instrument.realizedGain >= 0 ? "good" : "bad"}">${signedMoney(instrument.realizedGain)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Gesamtperformance</span>
+        <strong class="${instrument.totalGain >= 0 ? "good" : "bad"}">${signedMoney(instrument.totalGain)} (${signedPct(instrument.gainPct)})</strong>
+      </div>
+    `;
+
+    els.detailTransactionsWrap.style.display = "block";
+    els.detailTransactions.innerHTML = instrument.transactions.map(tx => {
+      const stamp = [formatDateDisplay(tx.date), formatTimeDisplay(tx.time)].filter(Boolean).join(" · ");
+      const total = tx.qty * tx.price;
+      const kindLabel = tx.kind === "sell" ? "Verkauf" : "Kauf";
+      return `
+        <article class="transaction-row" data-tx-id="${escapeHtml(tx.id)}">
+          <div class="transaction-kind ${tx.kind}">${kindLabel}</div>
+          <div class="transaction-meta">
+            <strong>${escapeHtml(stamp || "—")}</strong>
+            <small>${tx.qty.toLocaleString("de-DE")} Stk zu je ${money(tx.price)} · Gebühren: ${money(tx.fee)}</small>
+            ${tx.note ? `<small>${escapeHtml(tx.note)}</small>` : ""}
+          </div>
+          <div class="transaction-values">
+            <strong>${money(total)}</strong>
+            <small>${tx.kind === "sell" ? "Zufluss" : "Abfluss"}</small>
+          </div>
+          <div class="transaction-actions">
+            <button class="action-icon-btn" data-action="edit-tx" type="button" title="Buchung bearbeiten">✏️</button>
+            <button class="action-icon-btn danger" data-action="delete-tx" type="button" title="Buchung löschen">🗑️</button>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    els.detailTransactions.querySelectorAll("[data-action='edit-tx']").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const row = e.currentTarget.closest(".transaction-row");
+        if (row?.dataset.txId) openEditor(instrument.id, row.dataset.txId, "edit_tx");
+      });
+    });
+
+    els.detailTransactions.querySelectorAll("[data-action='delete-tx']").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const row = e.currentTarget.closest(".transaction-row");
+        if (row?.dataset.txId) deleteTransaction(row.dataset.txId);
+      });
+    });
+  } else {
+    // Unowned / Market item
+    els.detailTransactionsWrap.style.display = "none";
+    els.detailMetrics.innerHTML = `
+      <div class="detail-card">
+        <span>Aktueller Kurs</span>
+        <strong>${money(instrument.currentPrice)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Tagesveränderung</span>
+        <strong class="${(instrument.dayChangePct || 0) >= 0 ? "good" : "bad"}">${signedPct(instrument.dayChangePct || 0)} (${signedMoney(instrument.dayChange || 0)})</strong>
+      </div>
+      <div class="detail-card">
+        <span>Tagesspanne (Low / High)</span>
+        <strong>${money(instrument.dayLow)} – ${money(instrument.dayHigh)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>52-Wochen-Spanne</span>
+        <strong>${money(instrument.low52)} – ${money(instrument.high52)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Sektor / Branche</span>
+        <strong style="font-size: 15px;">${escapeHtml(instrument.sector || "Wertpapier")}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Asset-Klasse</span>
+        <strong style="font-size: 15px;">${escapeHtml(instrument.assetType || "Aktie")}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Kennnummer / ISIN</span>
+        <strong style="font-size: 14px; letter-spacing: 0.02em;">${escapeHtml(instrument.isin || `US${instrument.ticker}101`)}</strong>
+      </div>
+      <div class="detail-card">
+        <span>Handelsplatz &amp; Status</span>
+        <strong style="font-size: 14px; color: var(--good);">Live Indikation ●</strong>
+      </div>
+    `;
+  }
+
+  els.detailChartMeta.textContent = "";
+  renderChart(els.detailChart, buildInstrumentHistory(instrument, state.range), els.detailChartMeta, 260, state.range);
+
+  // Render news and CTA banner
+  renderInstrumentDetailNewsAndCta(instrument);
+
+  // Trigger live quote / candles enrichment in background
+  enrichInstrumentLiveData(instrument);
 
   els.closeDetail.focus();
 }
@@ -2232,16 +2796,24 @@ function saveEditor(event) {
   }
 }
 
+let searchDebounceTimer = null;
+let lastApiSearchQuery = "";
+let apiSearchResults = [];
+
 function renderSearchView() {
   const container = document.getElementById("searchResultsContainer");
   const input = document.getElementById("globalSearchInput");
   const clearBtn = document.getElementById("clearSearchBtn");
   if (!container) return;
 
-  const query = (input?.value || state.searchQuery || "").trim().toLowerCase();
+  const rawQuery = (input?.value || state.searchQuery || "").trim();
+  const query = rawQuery.toLowerCase();
   clearBtn?.classList.toggle("hidden", !query);
 
-  let results = STOCK_CATALOG.filter(item => {
+  const catalog = (typeof window !== "undefined" && window.STOCK_CATALOG) ? window.STOCK_CATALOG : STOCK_CATALOG;
+
+  // 1. Filter local expanded catalog
+  let localMatches = catalog.filter(item => {
     if (!query) return true;
     return (
       item.name.toLowerCase().includes(query) ||
@@ -2250,6 +2822,43 @@ function renderSearchView() {
       (item.isin && item.isin.toLowerCase().includes(query))
     );
   });
+
+  // 2. Merge with live API search results
+  let merged = [...localMatches];
+  if (query && apiSearchResults.length > 0 && lastApiSearchQuery === query) {
+    apiSearchResults.forEach(apiItem => {
+      if (!merged.some(m => m.ticker === apiItem.ticker)) {
+        merged.push(apiItem);
+      }
+    });
+  }
+
+  // 3. Debounced live API lookup
+  if (query && query.length >= 2 && query !== lastApiSearchQuery && hasLiveApi()) {
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(async () => {
+      try {
+        const liveResults = await state.api.manager.searchSymbols(query);
+        if (Array.isArray(liveResults) && liveResults.length > 0) {
+          lastApiSearchQuery = query;
+          apiSearchResults = liveResults.map(res => ({
+            name: res.name || res.description || res.symbol,
+            ticker: res.ticker || res.symbol,
+            assetType: res.assetType || (res.type === "Common Stock" ? "Aktie" : res.type || "Aktie"),
+            sector: res.sector || "International",
+            price: res.price || 100,
+            dayChangePct: res.dayChangePct || 0,
+            isin: res.isin || `US${res.symbol}101`
+          }));
+          renderSearchView();
+        }
+      } catch (err) {
+        console.warn("API Search failed", err);
+      }
+    }, 250);
+  }
+
+  let results = merged;
 
   if (state.searchCategory && state.searchCategory !== "all") {
     results = results.filter(item => {
@@ -2273,7 +2882,6 @@ function renderSearchView() {
   }
 
   if (!results.length && query) {
-    const rawQuery = (input?.value || state.searchQuery || "").trim();
     const cleanTicker = rawQuery.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8) || "TICKER";
     const formattedName = rawQuery.length <= 4 ? `${rawQuery.toUpperCase()} Inc.` : rawQuery;
     
@@ -2282,16 +2890,16 @@ function renderSearchView() {
       ticker: cleanTicker,
       assetType: "Aktie",
       sector: "International / Wertpapier",
-      price: 185.00,
-      dayChangePct: 1.20,
-      isin: `US${cleanTicker.padEnd(8, '0')}101`
+      price: 100.00,
+      dayChangePct: 0.0,
+      isin: `US${cleanTicker.padEnd(8, "0")}101`
     }];
   }
 
   if (!results.length) {
     container.innerHTML = emptyStateCard(
       `Keine Ergebnisse für "${escapeHtml(query)}"`,
-      "Versuche nach Ticker (z. B. TSLA, NVDA), ISIN oder Name (z. B. Tesla) zu suchen."
+      "Versuche nach Ticker (z. B. NET, TSLA, NVDA, SAP), ISIN oder Name (z. B. Cloudflare, Tesla, Nvidia) zu suchen."
     );
     return;
   }
@@ -2316,6 +2924,8 @@ function renderSearchView() {
             const isWatch = (state.watchlist || []).includes(item.ticker);
             const watchClass = isWatch ? "search-action-btn active-watch" : "search-action-btn";
             const watchLabel = isWatch ? "★ Watchlist" : "☆ Watchlist";
+            const itemPrice = item.currentPrice || item.price || 100;
+            const itemChange = item.dayChangePct || 0;
             return `
               <div class="search-item-card" data-ticker="${escapeHtml(item.ticker)}">
                 ${logoMarkup(item, "asset-badge")}
@@ -2324,11 +2934,11 @@ function renderSearchView() {
                   <span class="search-item-sub">${escapeHtml(item.ticker)} · ${escapeHtml(item.sector || item.assetType)} · ${escapeHtml(item.isin || "")}</span>
                 </div>
                 <div class="search-item-price">
-                  <span class="search-price-val">${money(item.price)}</span>
-                  <span class="search-price-change ${item.dayChangePct >= 0 ? 'good' : 'bad'}">${signedPct(item.dayChangePct)}</span>
+                  <span class="search-price-val">${money(itemPrice)}</span>
+                  <span class="search-price-change ${itemChange >= 0 ? 'good' : 'bad'}">${signedPct(itemChange)}</span>
                 </div>
                 <div class="search-item-actions">
-                  <button class="search-action-btn" data-action="buy" type="button">＋ Buchung</button>
+                  <button class="search-action-btn" data-action="buy" type="button" title="Kauf- oder Sparplanbuchung erstellen">＋ Buchung</button>
                   <button class="${watchClass}" data-action="watch" type="button">${watchLabel}</button>
                 </div>
               </div>
@@ -2343,18 +2953,21 @@ function renderSearchView() {
 
   container.querySelectorAll(".search-item-card").forEach(card => {
     const ticker = card.dataset.ticker;
-    const item = results.find(i => i.ticker === ticker) || STOCK_CATALOG.find(s => s.ticker === ticker) || { name: ticker, ticker };
+    const item = results.find(i => i.ticker === ticker) || catalog.find(s => s.ticker === ticker) || { name: ticker, ticker };
 
+    // Clicking the item CARD opens the full detail view (Chart, analysis, metrics, 1T-1J switcher, news)!
     card.addEventListener("click", (e) => {
       if (e.target.closest("button")) return;
-      openEditorForCatalogItem(item);
+      openInstrumentDetail(item);
     });
 
+    // Clicking '＋ Buchung' directly opens the prefilled booking editor
     card.querySelector('[data-action="buy"]')?.addEventListener("click", (e) => {
       e.stopPropagation();
       openEditorForCatalogItem(item);
     });
 
+    // Clicking '★ Watchlist' toggles watchlist
     card.querySelector('[data-action="watch"]')?.addEventListener("click", (e) => {
       e.stopPropagation();
       toggleWatchlistTicker(ticker);
@@ -2406,9 +3019,10 @@ function setupEditorSuggestions() {
       return;
     }
 
-    const matches = STOCK_CATALOG.filter(s =>
+    const catalog = (typeof window !== "undefined" && window.STOCK_CATALOG) ? window.STOCK_CATALOG : STOCK_CATALOG;
+    const matches = catalog.filter(s =>
       s.name.toLowerCase().includes(q) || s.ticker.toLowerCase().includes(q)
-    ).slice(0, 5);
+    ).slice(0, 6);
 
     if (!matches.length) {
       box.classList.add("hidden");
@@ -2763,8 +3377,13 @@ els.refreshBtn?.addEventListener("click", () => {
 });
 
 els.addTransactionBtn?.addEventListener("click", () => {
-  if (!state.selectedId) return;
-  openEditor(state.selectedId, null, "add_transaction");
+  const inst = state.selectedInstrument || (state.selectedId ? resolveInstrument(state.selectedId) : null);
+  if (!inst) return;
+  if (inst.isOwned) {
+    openEditor(inst.id, null, "add_transaction");
+  } else {
+    openEditorForCatalogItem(inst);
+  }
 });
 
 els.editPositionBtn?.addEventListener("click", () => {
@@ -2783,11 +3402,12 @@ els.detailBackdrop?.addEventListener("click", (event) => {
 });
 
 els.toggleWatch?.addEventListener("click", () => {
-  if (!state.selectedId) return;
-  const instrument = state.instruments.find(item => item.id === state.selectedId);
-  if (!instrument) return;
-  setWatchState(state.selectedId, !instrument.watch);
-  if (state.detailMode === "position") openInstrumentDetail(state.selectedId);
+  const inst = state.selectedInstrument || (state.selectedId ? resolveInstrument(state.selectedId) : null);
+  if (!inst) return;
+  toggleWatchlistTicker(inst.ticker);
+  const isWatch = (state.watchlist || []).includes(inst.ticker);
+  inst.watch = isWatch;
+  els.toggleWatch.textContent = isWatch ? "★ Aus Watchlist entfernen" : "☆ Zur Watchlist";
 });
 
 els.closeEditor?.addEventListener("click", () => closeEditor(false));
